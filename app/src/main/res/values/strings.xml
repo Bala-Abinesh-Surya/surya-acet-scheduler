@@ -1,0 +1,218 @@
+<resources>
+    <string name="app_name">scheduler</string>
+    <string name="classes">Classes</string>
+    <!--Custom strings-->
+    <string name="all_classes">All Classes</string>
+    <string name="all_staffs">All Staffs</string>
+    <string name="all_rooms">All Rooms</string>
+    <string name="all_labs">All Labs</string>
+    <string name="show_web">Visit Site</string>
+    <string name="generate">Generate New</string>
+    <string name="schedule">schedule</string>
+    <string name="subjects">Subjects</string>
+    <string name="teachers">Teachers</string>
+    <string name="classAdvisor">Class Advisor</string>
+    <string name="clickToViewSchedule">Click to see the timetable</string>
+    <string name="college">ACET</string>
+    <string name="swipe">Swipe from right to left</string>
+    <string name="swipeBottom">Swipe from bottom to top</string>
+    <string name="one">1</string>
+    <string name="two">2</string>
+    <string name="three">3</string>
+    <string name="four">4</string>
+    <string name="five">5</string>
+    <string name="six">6</string>
+    <string name="seven">7</string>
+    <string name="eight">8</string>
+    <string name="days">Days</string>
+    <string name="showHowSubject">Show more</string>
+    <string name="short_form">Short Form</string>
+    <string name="numberOfSessions">No. of Sessions</string>
+    <string name="staffs">Staffs</string>
+    <string name="add_a_class">Add a class</string>
+    <string name="add_a_staff">Add a staff</string>
+    <string name="edit_a_staff">Edit a staff</string>
+    <string name="remove_staff">Remove a staff</string>
+    <string name="remove_a_class">Remove a class</string>
+    <string name="remove">Remove</string>
+    <string name="edit_class">Edit existing class</string>
+    <string name="add_admin">Add admin</string>
+    <string name="quit_admin">Exit Admin mode</string>
+    <string name="addingClass">Adding a new class</string>
+    <string name="chooseDep">Choose the Department</string>
+    <string name="chooseYear">Choose the Year</string>
+    <string name="chooseSection">Choose the Section</string>
+    <string name="chooseClassAdvisor">Choose the Class Advisor</string>
+    <string name="selectedClass">Name of the selected class is :  </string>
+    <string name="next">NEXT</string>
+    <string name="addingBasicInfo">Enter basic info</string>
+
+    <!--all the departments-->
+    <string name="cseDep">CSE</string>
+    <string name="eceDep">ECE</string>
+    <string name="mechDep">MECH</string>
+    <string name="civilDep">CIVIL</string>
+    <string name="eeeDep">EEE</string>
+    <string name="firstYear">FIRST YEAR</string>
+    <string name="fyrDep">FYR</string>
+
+    <!--All sections-->
+    <string name="a">A</string>
+    <string name="b">B</string>
+    <string name="c">C</string>
+    <string name="d">D</string>
+    <string name="e">E</string>
+    <string name="f">F</string>
+    <string name="required">*</string>
+    <string name="sync">Update the database</string>
+    <string name="swap_schedules">Swap Schedules</string>
+
+    <!--filter constants-->
+    <string name="filters">Filters</string>
+    <string name="byYear">By Year</string>
+    <string name="byDep">By Department</string>
+    <string name="fyr">1st Year</string>
+    <string name="syr">2nd Year</string>
+    <string name="tyr">3rd Year</string>
+    <string name="foyr">4th Year</string>
+    <string name="onlineSchedule">Online Schedule</string>
+    <string name="offlineSchedule">Offline Schedule</string>
+
+    <!--Class adding activity-->
+    <string name="pick_year">Select Year</string>
+    <string name="pick_department">Select the department</string>
+    <string name="pick_section">Pick one section</string>
+    <string name="select_strength">Enter the class strength</string>
+    <string name="pick_class_advisor">Pick Class Advisor</string>
+    <string name="select_staffs">Select the staffs</string>
+    <string name="add_the_class">Add the class</string>
+    <string name="strength">Enter the strength</string>
+    <string name="class_strength">Class strength</string>
+    <string name="cannot_be_zero">Class strength cannot be zero or negative</string>
+    <string name="class_already_exists">Class already exists! Try to change the section</string>
+    <string name="choose_the_staff">Choose the class advisor</string>
+    <string name="enter_class_basic_details">Enter basic details</string>
+    <string name="firstYearsError">First Year and the department FYR should be same..</string>
+
+    <!--Staff adding activity-->
+    <string name="enter_staff_name">Enter the staff name</string>
+    <string name="designation">Designation</string>
+    <string name="Dr">Dr.</string>
+    <string name="mr">Mr.</string>
+    <string name="mrs">Mrs.</string>
+    <string name="ms">Ms</string>
+    <string name="constraints">Constraints</string>
+    <string name="add_the_staff">Add the staff</string>
+    <string name="click_staff_period">Click particular period to negate the slot from the schedule</string>
+    <string name="has_constraints">Does the staff have any timing constraints ?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="staff_name_already_present">Staff name already exists! Please alter the name to avoid confusion</string>
+    <string name="yes_staff2_name">If Yes, Enter the staff 2 name</string>
+
+    <!--Staff constraints activity-->
+    <string name="proceed">Proceed only if the staff has any timing constraints</string>
+    <string name="not_allowed_step">1. Click on the particular period that the staff has to a have constraint, and make it ******</string>
+    <string name="whole_day">2. To make the a whole particular day ******, click on the day</string>
+    <string name="click_again">3. Click the slot/day again to revert the changes</string>
+    <string name="better_in_land">Better use in landscape mode</string>
+    <string name="pointer_allow">4. Allowed - Slot is available for allocation</string>
+    <string name="pointer_disallow">5. ****** - Slot is not available for allocation</string>
+    <string name="all_slots">All Slots</string>
+    <string name="not_allowed_stars">******</string>
+
+    <!--remove_staffs activity-->
+    <string name="removing_staffs">Removing staffs</string>
+
+    <!--Staff removal confirmation activity-->
+    <string name="staff_details">Staff Details</string>
+    <string name="staff_name">Name of the staff : </string>
+    <string name="department">Department : </string>
+    <string name="inference">Inference</string>
+    <string name="remove_the_staff">Remove the staff</string>
+    <string name="go_back">Go Back</string>
+    <string name="class_advisor"># Selected staff is a class advisor for the class : </string>
+    <string name="teaching_staff"># Selected staff is handling subjects for one or more classes</string>
+    <string name="cannot_remove"># Please swap the schedule of the selected staff with some new staff and Try again</string>
+    <string name="free_from"># Selected staff can be removed safely without any issues</string>
+    <string name="make_sure"># The changes made cannot be undone</string>
+    <string name="confirmation">Removal Confirmation</string>
+    <string name="denied">Removal Denied</string>
+
+    <!--swap time table activity-->
+    <string name="swapping_schedules">Swapping schedules</string>
+    <string name="swap_proceed">Proceed only if you have to swap the schedules between two existing staffs</string>
+    <string name="swap_better">It is better if the swapping is done, between an existing staff and just added new staff</string>
+    <string name="swap_changes_made">The following changes will be made : </string>
+    <string name="swap_change_1">1. The entire weekly schedule will be swapped between the two selected staffs</string>
+    <string name="swap_change_2">2. This swap also changes the list of subject handling staffs in the concerned classes, the staffs are teaching</string>
+    <string name="swap_change_3">3. Including the class advisor role</string>
+    <string name="select_two_staffs">Select two staffs</string>
+    <string name="choose_staff1">Choose Staff 1</string>
+    <string name="choose_staff_2">Choose staff 2</string>
+    <string name="start_swapping">Start Swapping</string>
+    <string name="not_a_class_advisor">Staff is not a class advisor</string>
+    <string name="same_staff">Seems you have selected same staff both the times</string>
+    <string name="select_diff_staff">Select different staffs</string>
+    <string name="select_2_staffs">Please select two staffs</string>
+    <string name="successfully_swapped">Successfully Swapped</string>
+
+    <!--Admins activity-->
+    <string name="add">Add</string>
+
+    <!--Admins conformation activity-->
+    <string name="admin_pre">Proceed only if you have to promote the selected staff as the Admin</string>
+    <string name="admin_1">1. Only an Admin edit/generate the timetable</string>
+    <string name="admin_2">2. Only an Admin can add/remove staffs or swap their existing timetables</string>
+    <string name="admin_4">4. An Admin can remove the other admins too</string>
+    <string name="admin_3">3. An Admin only can add/edit/remove the classes present in the existing system</string>
+    <string name="admin_5">5. Too many cooks spoil the kitchen, likewise more the admins present greater are the chances for confusion</string>
+    <string name="admin_do">Do you still intend to promote the staff as the Admin ? </string>
+    <string name="promote_as_admin">Promote as admin</string>
+    <string name="admin_promotion">Admin Promotion</string>
+    <string name="admin_editing">Editing Admins</string>
+
+    <!--Export staff activity-->
+    <string name="export_staff_schedule">Pick a staff</string>
+    <string name="export_this">Export</string>
+
+    <!--Class adding activity-->
+    <string name="only_if_staff_2_is_needed">Choose another staff only if the subject is handled by two staffs</string>
+    <string name="is_it_a_continuous_subject">Should this subject be CONTINUOUS for two periods at once?</string>
+    <string name="reset_the_changes">Undo the changes</string>
+    <string name="only_if_staff_2_lab">Choose another staff only if the lab is handled by two staffs</string>
+    <string name="choose_the_lab">Pick the lab</string>
+    <string name="paired">Paired</string>
+    <string name="stand_alone">Stand Alone</string>
+    <string name="subject_name">Subject Name</string>
+    <string name="choose_the_staff1">Choose the staff</string>
+    <string name="another_staff_needed">Is the subject handled by yet another staff too ?</string>
+    <string name="another_staff_needed_lab">Is the lab handled by yet another staff too ?</string>
+    <string name="if_yes_choose_staff2">If Yes, choose the staff 2</string>
+    <string name="is_the_subject_continuous">Is the subject continuous for two hours or just one hour per session ?</string>
+    <string name="normal">Normal</string>
+    <string name="continuous">Continuous</string>
+    <string name="paired_or_alone">Is the lab, paired with other labs or stand alone ?</string>
+    <string name="subject_tag">Subject Tag</string>
+
+    <!--Titles-->
+    <string name="enter_basic">Enter basic details</string>
+    <string name="export">PDF Export</string>
+    <string name="class_details">Export all class details</string>
+    <string name="export_class_schedule">Export a class schedule</string>
+    <string name="pick_one_class">Pick a class</string>
+    <string name="export_all_classes_schedules">Export all classes schedules</string>
+    <string name="export_a_staff_schedule">Export a staff schedule</string>
+    <string name="export_all_staffs_schedules">Export all staffs schedules</string>
+    <string name="enter_staff_details">Pick staffs for each subjects</string>
+    <string name="pick_a_class_to_remove">Pick a class to remove</string>
+
+    <!--Error toasts-->
+    <string name="enter_the_staff_name">Enter the staff name</string>
+    <string name="pick_designation">Pick a designation</string>
+    <string name="already_an_admin">No need, already you are an admin</string>
+    <string name="go_back_ask">If you go back, you might lose all the progress</string>
+    <string name="show_more">Show more</string>
+    <string name="show_less">Show less</string>
+
+</resources>

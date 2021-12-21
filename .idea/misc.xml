@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/scheduler/app/src/main/res/drawable-anydpi/ic_down.xml" value="0.22407407407407406" />
+        <entry key="..\:/scheduler/app/src/main/res/drawable-anydpi/ic_filter.xml" value="0.23796296296296296" />
+        <entry key="..\:/scheduler/app/src/main/res/drawable/card_bg_stroke.xml" value="0.16644951140065148" />
+        <entry key="..\:/scheduler/app/src/main/res/drawable/edit_text_stroke.xml" value="0.15625" />
+        <entry key="..\:/scheduler/app/src/main/res/drawable/row_bg.xml" value="0.22777777777777777" />
+        <entry key="..\:/scheduler/app/src/main/res/drawable/stroke_bg.xml" value="0.16319444444444445" />
+        <entry key="..\:/scheduler/app/src/main/res/drawable/stroke_bg1.xml" value="0.1638888888888889" />
+        <entry key="..\:/scheduler/app/src/main/res/drawable/stroke_bg2.xml" value="0.1638888888888889" />
+        <entry key="..\:/scheduler/app/src/main/res/drawable/stroke_bg_negative.xml" value="0.16180555555555556" />
+        <entry key="..\:/scheduler/app/src/main/res/drawable/stroke_bg_positive.xml" value="0.16180555555555556" />
+        <entry key="..\:/scheduler/app/src/main/res/layout-land/subjects_layout.xml" value="0.4296875" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/activity_add_aclass.xml" value="0.2" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/activity_add_admin.xml" value="0.25" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/activity_class_adding.xml" value="0.264" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/activity_class_basic_details.xml" value="0.264" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/activity_class_info.xml" value="0.4" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/activity_class_staffs_allocating.xml" value="0.4" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/activity_coaching_schedule.xml" value="0.26197916666666665" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/activity_conform_admin.xml" value="0.4" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/activity_export_aclass_schedule.xml" value="0.25" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/activity_export_astaff_schedule.xml" value="0.25" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/activity_export_class_details.xml" value="0.25" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/activity_online_schedule.xml" value="0.2" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/activity_remove_aclass.xml" value="0.25" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/activity_remove_staffs.xml" value="0.264" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/activity_remove_staffs_conformation.xml" value="0.264" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/activity_schedule.xml" value="0.2359375" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/activity_splash_screen.xml" value="0.264" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/activity_staff_adding.xml" value="0.2" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/activity_staff_basic_details.xml" value="0.2602996254681648" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/activity_staff_constraints.xml" value="0.264" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/activity_staff_selection.xml" value="0.25" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/activity_stats.xml" value="0.25" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/activity_swap_time_table.xml" value="0.4" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/all_classes_list.xml" value="0.4" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/all_staffs_list.xml" value="0.264" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/class_staff_allocating_sample.xml" value="0.25" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/class_stats_list.xml" value="0.25" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/class_subject_details.xml" value="0.264" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/class_subjects_stats.xml" value="0.2477355072463768" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/coaching_all_two_slots.xml" value="0.26197916666666665" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/details_subjects_staffs.xml" value="0.25" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/fragment_all_classes_fragment.xml" value="0.264" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/fragment_all_rooms_fragment.xml" value="0.25" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/fragment_all_staffs_fragment.xml" value="0.25" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/labs_details_adding_layout.xml" value="0.264" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/labs_more_layout.xml" value="0.264" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/lecture_more_layout.xml" value="0.264" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/online_staff_schedule.xml" value="0.264" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/placement_details_adding_layout.xml" value="0.264" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/subject_staffs_rec_view.xml" value="0.25" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/subjects_details_adding_layout.xml" value="0.4" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/subjects_layout.xml" value="0.15789473684210525" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/timetable.xml" value="0.23641304347826086" />
+        <entry key="..\:/scheduler/app/src/main/res/menu/main_menu.xml" value="0.2" />
+        <entry key="..\:/scheduler/app/src/main/res/menu/main_staffs_menu.xml" value="0.15789473684210525" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.264" />
+      </ProjectState>
+    </option>
+  </component>
+</project>

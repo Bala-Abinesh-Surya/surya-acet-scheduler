@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/classes">
+        <menu>
+            <item
+                android:id="@+id/main_add_class"
+                android:title="@string/add_a_class" />
+            <item
+                android:id="@+id/main_edit_class"
+                android:title="@string/edit_class" />
+            <item
+                android:id="@+id/main_remove_class"
+                android:title="@string/remove_a_class" />
+        </menu>
+    </item>
+
+    <item android:title="@string/staffs">
+        <menu>
+            <item
+                android:id="@+id/main_add_staff"
+                android:title="@string/add_a_staff" />
+            <item
+                android:id="@+id/main_remove_staff"
+                android:title="@string/remove_staff" />
+            <item
+                android:id="@+id/main_menu_swap"
+                android:title="@string/swap_schedules" />
+            <item
+                android:id="@+id/main_add_admin"
+                android:title="@string/add_admin" />
+        </menu>
+    </item>
+
+    <item android:title="@string/export" >
+        <menu >
+            <item
+                android:id="@+id/export_class_details"
+                android:title="@string/class_details" />
+            <item
+                android:id="@+id/main_export_class_schedule"
+                android:title="@string/export_class_schedule" />
+            <item
+                android:id="@+id/main_export_all_classes_schedules"
+                android:title="@string/export_all_classes_schedules" />
+            <item
+                android:id="@+id/main_export_a_staff_schedule"
+                android:title="@string/export_a_staff_schedule" />
+            <item
+                android:id="@+id/main_export_all_staffs_schedule"
+                android:title="@string/export_all_staffs_schedules"/>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/main_menu_update"
+        android:title="@string/sync" />
+    <item
+        android:id="@+id/main_exit_admin"
+        android:title="@string/quit_admin" />
+
+
+</menu>
