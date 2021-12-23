@@ -129,7 +129,7 @@ public class schedule extends AppCompatActivity {
                 if(Staff.getName().equals(staffName)){
                     int num = 0;
                     for(String x : DAYS_OF_THE_WEEK){
-                        String[] temp = new String[4];
+                        String[] temp = Staff.getSchedule().get(x).clone();
                         schedules.add(num, temp);
                         num++;
                     }

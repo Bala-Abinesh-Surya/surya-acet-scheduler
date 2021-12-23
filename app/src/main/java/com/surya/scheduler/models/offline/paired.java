@@ -19,15 +19,18 @@ import java.util.Hashtable;
 public class paired {
 
     public static paired instance;
-    public static int summa = 5;
 
     public static Hashtable<String, String> pairedLabs = new Hashtable<>();
+    public static Hashtable<String, String> pairedClasses = new Hashtable<>();
     public static Hashtable<String, String[]> pairedLabsStaffs = new Hashtable<>();
     public static Hashtable<String, String> pairedSubjects = new Hashtable<>();
+    public static Hashtable<String, Integer> pairedSubjectsCount = new Hashtable<>();
     public static Hashtable<String, Integer> hashedSubjects = new Hashtable<>();
     public static Hashtable<String, Integer> laterDoIt = new Hashtable<>();
     public static ArrayList<String> hashedSubjectsArray = new ArrayList<>();
     public static ArrayList<Integer> hashedSubjectsInteger = new ArrayList<>();
+
+    public static Hashtable<String, String> subjectRepeatedForClass = new Hashtable<>();
 
     /*Constructor*/
     public paired(){
@@ -110,5 +113,29 @@ public class paired {
 
     public static void setHashedSubjectsInteger(ArrayList<Integer> hashedSubjectsInteger) {
         paired.hashedSubjectsInteger = hashedSubjectsInteger;
+    }
+
+    public static Hashtable<String, Integer> getPairedSubjectsCount() {
+        return pairedSubjectsCount;
+    }
+
+    public static void setPairedSubjectsCount(Hashtable<String, Integer> pairedSubjectsCount) {
+        paired.pairedSubjectsCount = pairedSubjectsCount;
+    }
+
+    public static Hashtable<String, String> getPairedClasses() {
+        return pairedClasses;
+    }
+
+    public static void setPairedClasses(Hashtable<String, String> pairedClasses) {
+        paired.pairedClasses = pairedClasses;
+    }
+
+    public static Hashtable<String, String> getSubjectRepeatedForClass() {
+        return subjectRepeatedForClass;
+    }
+
+    public static void setSubjectRepeatedForClass(Hashtable<String, String> subjectRepeatedForClass) {
+        paired.subjectRepeatedForClass = subjectRepeatedForClass;
     }
 }

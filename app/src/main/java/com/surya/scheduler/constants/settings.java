@@ -11,6 +11,9 @@ public class settings {
     public static int MAXIMUM_PERIODS_FOR_A_STAFF_PER_DAY_WITH_LAB = 5;
     public static int MAXIMUM_PERIODS_FOR_A_STAFF_PER_DAY = 3;
 
+    // number of periods for a subject with LECTURE tag
+    public static int NUMBER_OF_PERIODS_LECTURE = 5;
+
     // Laboratory Periods'
     // as of now, the periods are based on the 7 periods per day basis
     public static int[] LABORATORY_MORNING_SESSIONS_PERIODS = new int[]{0, 1, 2};

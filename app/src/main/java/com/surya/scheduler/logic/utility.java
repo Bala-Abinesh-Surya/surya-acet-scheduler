@@ -12,6 +12,7 @@ import static com.surya.scheduler.constants.settings.LABORATORY_AFTERNOON_SESSIO
 import static com.surya.scheduler.constants.settings.LABORATORY_MORNING_SESSIONS_PERIODS;
 import static com.surya.scheduler.constants.settings.MAXIMUM_PERIODS_FOR_A_STAFF_PER_DAY;
 import static com.surya.scheduler.constants.settings.MAXIMUM_PERIODS_FOR_A_STAFF_PER_DAY_WITH_LAB;
+import static com.surya.scheduler.constants.settings.NUMBER_OF_PERIODS_PER_DAY;
 
 import com.surya.scheduler.models.offline.Class;
 import com.surya.scheduler.models.offline.paired;
@@ -34,8 +35,6 @@ public class utility {
     public utility(){
 
     }
-
-    // method to set the arrays based on the number of periods entered while
 
     /*Method to identify if a subject is a LAB, LECTURE or a PLACEMENT class*/
     /*PASS THE RAW STRING AS THE ARGUMENT*/
@@ -231,18 +230,44 @@ public class utility {
         }
     }
 
-    // method to check if the subject is already there
-    public boolean isTheSubjectAlreadyThere(String[] periods, String subject){
-        boolean isThere = false;
+    // method to check if the particular slot is FREE
+    public boolean isTheSlotFree(String[] periods, int slot){
+        return periods[slot].equals(FREE);
+    }
 
-        for(String period : periods){
-            if(period.contains(subject)){
-                isThere = true;
-                return isThere;
+    // method to check if the subject is already there
+    // a subject can be allocated twice in day, that too only once in a week
+    public boolean isTheSubjectRepeated(String className, String subject){
+        if(paired.subjectRepeatedForClass.containsKey(className + subject)){
+            // particular subject is allocated twice on a given day
+            return true;
+        }
+
+        else{
+            // hash table for the class
+            Hashtable<String, String[]> classTable = returnClassSchedule(className);
+
+            // going through the hash table
+            for(String day : DAYS_OF_THE_WEEK){
+                String[] periods = classTable.get(day).clone();
+                int count = 0;
+
+                for(String period : periods){
+                    if(period.contains(subject)){
+                        count++;
+
+                        if(count > 1){
+                            // means the subject is allocated twice on a given day
+                            paired.subjectRepeatedForClass.put(className + subject, className);
+                            return true;
+                        }
+                    }
+                }
             }
         }
 
-        return isThere;
+        // the subject is not allocated twice on any given day in a week
+        return false;
     }
 
     /*Method used to check if a lab is already assigned to the class in the particular day*/
@@ -263,6 +288,10 @@ public class utility {
     // session - MORNING or AFTERNOON
     public boolean overAllClassConstraintsForLab(String[] schedule, String session){
         return ( (labsSlotChecker(schedule, session)) && (! isALabAlreadyThere(schedule)));
+    }
+
+    public boolean overAllClassConstraints(String className, String[] periods, int slot, String subject){
+        return ( (isTheSlotFree(periods, slot)) && (! (isTheSubjectRepeated(className, subject))));
     }
 
     /***********************************************************************************************************************************/
@@ -295,6 +324,31 @@ public class utility {
 
         // if no labs assigned, the staff can have only 3 periods at maximum
         return count <= MAXIMUM_PERIODS_FOR_A_STAFF_PER_DAY;
+    }
+
+    // method to check the work load of a staff
+    public boolean isTheSlotOkayForTheStaff(String[] periods, int slot){
+        if(slot == 0){
+            // first period
+            // either second or third period must be FREE
+            return periods[1].equals(FREE) || periods[2].equals(FREE);
+        }
+        else if(slot == NUMBER_OF_PERIODS_PER_DAY - 1){
+            // last period
+            // either the period before the last period or the one before that must be FREE
+            return periods[NUMBER_OF_PERIODS_PER_DAY - 2].equals(FREE) || periods[NUMBER_OF_PERIODS_PER_DAY - 3].equals(FREE);
+        }
+        else{
+            // some random periods
+            // then, either the period before or the one after must be FREE
+            return periods[slot - 1].equals(FREE) || periods[slot + 1].equals(FREE);
+        }
+    }
+
+    // overall constraints for a staff
+    public boolean overAllConstraintsForAStaff(String[] periods, int slot, int number){
+        // number - number of hours for a subject
+        return ( (isTheSlotFree(periods, slot)) && (dailyWorkingHoursOfAStaff(periods, number)) && (isTheSlotOkayForTheStaff(periods, slot)));
     }
 
     /*********************************************************************************************************************************/

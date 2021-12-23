@@ -22,7 +22,10 @@ public class status {
     // generate class constants
     public static final String GENERATE_STATUS = "GenerateStatus";
     public static final String GENERATE_LABS_COMPLETED = "Generate Labs Completed";
+    public static final String GENERATE_PAIRED_SUBJECTS_COMPLETED = "Generate Paired Subjects Completed";
     public static final String PAIRED_INSTANCE_CREATED = "Paired Instance Created";
 
     public static final String STAND_ALONE_LAB_GENERATED = "standAloneLab";
+    public static final String PAIRED_LAB_GENERATED = "pairedLab";
+    public static final String SUBJECTS_GENERATED = "subjectsAllocated";
 }
