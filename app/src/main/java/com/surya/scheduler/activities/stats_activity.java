@@ -100,8 +100,7 @@ public class stats_activity extends AppCompatActivity {
             }
 
             /*Getting the schedule for the class*/
-            Hashtable<String, String[]> classTable = new Hashtable<>();
-            //classTable = Class.allClasses.get(classPosition).getSchedule();
+            Hashtable<String, String[]> classTable = classTable = Class.allClasses.get(classPosition).getSchedule();
 
             /*hashtable containing number of sessions of each subject*/
             Hashtable<String, Integer> details = new Hashtable<>();

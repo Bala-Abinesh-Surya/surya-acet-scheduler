@@ -16,6 +16,7 @@ import static com.surya.scheduler.constants.settings.NUMBER_OF_PERIODS_PER_DAY;
 import static com.surya.scheduler.constants.status.GENERATE_LABS_COMPLETED;
 import static com.surya.scheduler.constants.status.GENERATE_PAIRED_SUBJECTS_COMPLETED;
 import static com.surya.scheduler.constants.status.GENERATE_STATUS;
+import static com.surya.scheduler.constants.status.GENERATE_THEORY_COMPLETED;
 import static com.surya.scheduler.constants.status.PAIRED_INSTANCE_CREATED;
 import static com.surya.scheduler.constants.status.PAIRED_LAB_GENERATED;
 import static com.surya.scheduler.constants.status.STAND_ALONE_LAB_GENERATED;
@@ -32,6 +33,7 @@ import com.surya.scheduler.storage.store;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.concurrent.Callable;
 
 public class generate {
 
@@ -60,6 +62,9 @@ public class generate {
 
         // generating schedules for the paired subjects
         generatePairedSubjectsSchedule();
+
+        // generating slots for the theory subjects
+        generateTheorySchedule();
     }
 
     /*This generate class must be a singleton class*/
@@ -212,6 +217,9 @@ public class generate {
     }
 
     /*Method to generate schedules for the STAND_ALONE labs*/
+    // staff2 is more like an assisting staff
+    // staff1 is the primary staff who takes care of the class
+    // staff2 will have some free slots, in which he/she may come to the class
     private void standAloneLabSchedule(
             String staff1,
             String staff2,
@@ -267,135 +275,51 @@ public class generate {
             String[] staff1TempTable = staffTable1.get(day).clone();
             String[] labTempTable = labTable.get(day).clone();
 
-            if(staff2 == null){
-                /*As of now, only for ISLS lab, staff2 is null*/
-                if(numberOfTimes > 50){
-                    spotted = true;
-                }
-
-                else{
-                    // checking the constraints
-                    // for the class
-                    if(utility.overAllClassConstraintsForLab(classTempTable, session)){
-                        // for the staffs
-                        if(utility.dailyWorkingHoursOfAStaff(staff1TempTable, LABORATORY_MORNING_SESSIONS_PERIODS.length)){
-                            // for the lab
-                            if(utility.labsSlotChecker(labTempTable, session)){
-                                // slot is ready for allocation
-                                // altering the arrays
-                                // class
-                                classTempTable = utility.setArrayForLabForAClass(classTempTable, session, subjectName);
-                                // staffs
-                                staff1TempTable = utility.setArrayForLabForAStaff(staff1TempTable, session, className);
-                                // labs
-                                labTempTable = utility.setArrayForLabForAStaff(labTempTable, session, className);
-
-                                // modifying the hash tables in the array lists
-                                Class.allClasses.get(class1Position).getSchedule().replace(day, classTempTable);
-                                staff.allStaffs.get(staff1Position).getSchedule().replace(day, staff1TempTable);
-                                room.allRooms.get(lab1Position).getSchedule().replace(day, labTempTable);
-
-                                // altering the short forms array of a class
-                                String[] classTemp = Class.allClasses.get(class1Position).getShortFormSchedule().get(day).clone();
-                                classTemp = utility.setArrayForLabForAClassShortForm(classTemp, session, subjectShortForm);
-                                Class.allClasses.get(class1Position).getShortFormSchedule().replace(day, classTemp);
-
-                                // altering the subject names array of a staff
-                                // staff1
-                                String[] staffTemp = staff.allStaffs.get(staff1Position).getSubjectsSchedule().get(day).clone();
-                                staffTemp = utility.setArrayForLabForAClass(staffTemp, session, subjectName);
-                                staff.allStaffs.get(staff1Position).getSubjectsSchedule().replace(day, staffTemp);
-
-                                Log.d(STAND_ALONE_LAB_GENERATED, className + "/" + subjectName);
-
-                                spotted = true;
-                            }
-                        }
-                    }
-                }
+            if(numberOfTimes > 50){
+                spotted = true;
             }
 
             else{
-                /*Both staff1 and staff2 are not null*/
-                String[] staff2TempTable = staffTable2.get(day).clone();
+                // checking the constraints
+                // for the class
+                if(utility.overAllClassConstraintsForLab(classTempTable, session)){
+                    // for the staffs
+                    if(utility.overAllConstraintsForAStaffLab(staff1TempTable, session, LABORATORY_MORNING_SESSIONS_PERIODS.length)){
+                        // for the lab
+                        if(utility.labsSlotChecker(labTempTable, session)){
+                            // slot is ready for allocation
+                            // altering the arrays
+                            // class
+                            classTempTable = utility.setArrayForLabForAClass(classTempTable, session, subjectName);
+                            // staffs
+                            staff1TempTable = utility.setArrayForLabForAStaff(staff1TempTable, session, className);
+                            // labs
+                            labTempTable = utility.setArrayForLabForAStaff(labTempTable, session, className);
 
-                if(numberOfTimes > 20){
-                    // numberOfTimes is greater than 50
-                    // ithuku mela may be free slots ilaama irukalam
-                    // so, kedacha slot la allot panitu, antha slot la already ula lab ah allocate pana intha method ah thirumba call panalam
-                    boolean slotIsNotFree = true;
+                            // replacing the original arrays with the modified ones
+                            classTable.replace(day, classTempTable);
+                            staffTable1.replace(day, staff1TempTable);
+                            labTable.replace(day, labTempTable);
 
-                    // checking still if the slot is FREE
-                    // for the class
-                    if(utility.overAllClassConstraintsForLab(classTempTable, session)){
-                        // for the staffs
-                        if(utility.dailyWorkingHoursOfAStaff(staff1TempTable, LABORATORY_MORNING_SESSIONS_PERIODS.length)){
-                            if(utility.dailyWorkingHoursOfAStaff(staff2TempTable, LABORATORY_MORNING_SESSIONS_PERIODS.length)){
-                                // for the lab
-                                if(utility.labsSlotChecker(labTempTable, session)){
-                                    // slot is FREE and ready for allocation
-                                    slotIsNotFree = false;
+                            // modifying the hash tables in the array lists
+                            Class.allClasses.get(class1Position).setSchedule(classTable);
+                            staff.allStaffs.get(staff1Position).setSchedule(staffTable1);
+                            room.allRooms.get(lab1Position).setSchedule(labTable);
 
-                                    spotted = true;
-                                }
-                            }
-                        }
-                    }
+                            // altering the short forms array of a class
+                            String[] classTemp = Class.allClasses.get(class1Position).getShortFormSchedule().get(day).clone();
+                            classTemp = utility.setArrayForLabForAClassShortForm(classTemp, session, subjectShortForm);
+                            Class.allClasses.get(class1Position).getShortFormSchedule().replace(day, classTemp);
 
-                    if(slotIsNotFree){
-                        // the slot is NOT FREE
-                        // already a lab is assigned
+                            // altering the subject names array of a staff
+                            // staff1
+                            String[] staffTemp = staff.allStaffs.get(staff1Position).getSubjectsSchedule().get(day).clone();
+                            staffTemp = utility.setArrayForLabForAClass(staffTemp, session, subjectName);
+                            staff.allStaffs.get(staff1Position).getSubjectsSchedule().replace(day, staffTemp);
 
-                        spotted = true;
-                    }
-                }
+                            Log.d(STAND_ALONE_LAB_GENERATED, className + "/" + staff1 + " / " + subjectName);
 
-                else{
-                    // checking the constraints
-                    // for the class
-                    if(utility.overAllClassConstraintsForLab(classTempTable, session)){
-                        // for the staffs
-                        if(utility.dailyWorkingHoursOfAStaff(staff1TempTable, LABORATORY_MORNING_SESSIONS_PERIODS.length)){
-                            if(utility.dailyWorkingHoursOfAStaff(staff2TempTable, LABORATORY_MORNING_SESSIONS_PERIODS.length)){
-                                // for the lab
-                                if(utility.labsSlotChecker(labTempTable, session)){
-                                    // slot is ready for allocation
-                                    // altering the arrays
-                                    // class
-                                    classTempTable = utility.setArrayForLabForAClass(classTempTable, session, subjectName);
-                                    // staffs
-                                    staff1TempTable = utility.setArrayForLabForAStaff(staff1TempTable, session, className);
-                                    staff2TempTable = utility.setArrayForLabForAStaff(staff2TempTable, session, className);
-                                    // labs
-                                    labTempTable = utility.setArrayForLabForAStaff(labTempTable, session, className);
-
-                                    // modifying the hash tables in the array lists
-                                    Class.allClasses.get(class1Position).getSchedule().replace(day, classTempTable);
-                                    staff.allStaffs.get(staff1Position).getSchedule().replace(day, staff1TempTable);
-                                    staff.allStaffs.get(staff2Position).getSchedule().replace(day, staff2TempTable);
-                                    room.allRooms.get(lab1Position).getSchedule().replace(day, labTempTable);
-
-                                    // altering the short forms array of a class
-                                    String[] classTemp = Class.allClasses.get(class1Position).getShortFormSchedule().get(day).clone();
-                                    classTemp = utility.setArrayForLabForAClassShortForm(classTemp, session, subjectShortForm);
-                                    Class.allClasses.get(class1Position).getShortFormSchedule().replace(day, classTemp);
-
-                                    // altering the subject names array of a staff
-                                    // staff1
-                                    String[] staffTemp = staff.allStaffs.get(staff1Position).getSubjectsSchedule().get(day).clone();
-                                    staffTemp = utility.setArrayForLabForAClass(staffTemp, session, subjectName);
-                                    staff.allStaffs.get(staff1Position).getSubjectsSchedule().replace(day, staffTemp);
-
-                                    // staff2
-                                    staffTemp = staff.allStaffs.get(staff2Position).getSubjectsSchedule().get(day).clone();
-                                    staffTemp = utility.setArrayForLabForAClass(staffTemp, session, subjectName);
-                                    staff.allStaffs.get(staff2Position).getSubjectsSchedule().replace(day, staffTemp);
-
-                                    Log.d(STAND_ALONE_LAB_GENERATED, className + "/" + subjectName);
-
-                                    spotted = true;
-                                }
-                            }
+                            spotted = true;
                         }
                     }
                 }
@@ -478,8 +402,8 @@ public class generate {
                     // for the class
                     if(utility.overAllClassConstraintsForLab(classTempTable, session)){
                         // staffs
-                        if(utility.dailyWorkingHoursOfAStaff(staff1TempTable, LABORATORY_MORNING_SESSIONS_PERIODS.length)){
-                            if(utility.dailyWorkingHoursOfAStaff(staff2TempTable, LABORATORY_MORNING_SESSIONS_PERIODS.length)){
+                        if(utility.overAllConstraintsForAStaffLab(staff1TempTable, session, LABORATORY_MORNING_SESSIONS_PERIODS.length)){
+                            if(utility.overAllConstraintsForAStaffLab(staff2TempTable, session, LABORATORY_MORNING_SESSIONS_PERIODS.length)){
                                 // labs
                                 if(utility.labsSlotChecker(lab1TempTable, session)){
                                     if(utility.labsSlotChecker(lab2TempTable, session)){
@@ -689,8 +613,8 @@ public class generate {
                 else{
                     // checking for the constraints
                     // classes
-                    if(utility.overAllClassConstraints(className1, class1TempTable, randomSession, subject)){
-                        if(utility.overAllClassConstraints(className2, class2TempTable, randomSession, subject)){
+                    if(utility.overAllClassConstraints(className1, class1TempTable, randomSession, subject, day)){
+                        if(utility.overAllClassConstraints(className2, class2TempTable, randomSession, subject, day)){
                             // staffs
                             if(utility.overAllConstraintsForAStaff(staff1TempTable, randomSession, 1)){
                                 if(utility.overAllConstraintsForAStaff(staff2TempTable, randomSession, 1)){
@@ -738,6 +662,186 @@ public class generate {
                             }
                         }
                     }
+                }
+
+                numberOfTimes++;
+            }
+        }
+    }
+
+    // method to generate slots for THEORY subjects
+    private void generateTheorySchedule(){
+        int previousYear = 0;
+        int helper = 0;
+        int count = 0;
+
+        for (String rawSubject : SUBJECTS) {
+            // subject details
+            int year = Integer.parseInt(String.valueOf(rawSubject.charAt(4)));
+            String department = rawSubject.substring(0, 3);
+            String subject = rawSubject.substring(6);
+
+            if (previousYear == 0) {
+                previousYear = year;
+            }
+            else {
+                if (previousYear == year) {
+                    helper++;
+                }
+                else {
+                    previousYear = year;
+                    helper = 0;
+                }
+            }
+
+            if(utility.identifyTag(rawSubject).equals(LECTURE)){
+                // logging the subject
+                Log.d(LECTURE, rawSubject);
+
+                // going through the all the classes teachers combo
+                for(Class classx : Class.allClasses){
+                    // class details
+                    String name = classx.getName();
+                    String dep = classx.getDepartment().substring(0, 3);
+                    int classYear = classx.getYear();
+
+                    if(year == classYear){
+                        if(dep.equals(department)){
+                            // getting the teachersCombo
+                            String teachersCombo = classx.getTeachers()[helper + 1];
+
+                            if(! (teachersCombo.contains(PAIRED))){
+                                // staff details
+                                String[] temp = utility.subjectStaffDetails(teachersCombo);
+                                String staff1 = temp[0];
+                                String staff2 = temp[1];
+
+                                /*private void generateTheorySchedule(
+                                        String className,
+                                        String subject,
+                                        int shortFormIndex,
+                                        String staff1,
+                                        String staff2
+                                )*/
+
+                                generateTheorySchedule(
+                                        name,
+                                        subject,
+                                        count,
+                                        staff1,
+                                        staff2
+                                );
+                            }
+                        }
+                    }
+                }
+            }
+
+            count++;
+        }
+
+        Log.d(GENERATE_STATUS, GENERATE_THEORY_COMPLETED);
+    }
+
+    // method to generate slots for THEORY subjects
+    // THEORY subjects will have 5 sessions per week
+    private void generateTheorySchedule(
+            String className,
+            String subject,
+            int shortFormIndex,
+            String staff1,
+            String staff2
+    )
+    {
+        // hash table for the class, staffs
+        // class
+        Hashtable<String, String[]> classTable = utility.returnClassSchedule(className);
+
+        // staffs
+        Hashtable<String, String[]> staff1Table = utility.returnStaffSchedule(staff1);
+        Hashtable<String, String[]> staff2Table = new Hashtable<>();
+        if(! (staff2 == null)){
+            staff2Table = utility.returnStaffSchedule(staff2);
+        }
+
+        // position indicators for the staffs and class
+        int classPosition = utility.returnClassPosition(className);
+        int staff1Position = utility.returnStaffPosition(staff1);
+        int staff2Position = 0;
+        if(! (staff2 == null)){
+            staff2Position = utility.returnStaffPosition(staff2);
+        }
+
+        // short form of the subject
+        String shortForm = SHORT_FORM_SUBJECTS[shortFormIndex];
+
+        for(int i = 0; i < NUMBER_OF_PERIODS_LECTURE; i++){
+            boolean spotted = false;
+            int numberOfTimes = 0;
+
+            while(! spotted){
+                /*Using Random method generating random numbers to denote the day of the week and session*/
+                int randomDay = 0;
+                int randomSession = 0;
+
+                int dayMin = 1;
+                int dayMax = 6; // saturday
+
+                int sessionMin = 0;
+                int sessionMax = NUMBER_OF_PERIODS_PER_DAY - 1;
+
+                randomDay = (int) (Math.random() * (dayMax - dayMin + 1) + dayMin);
+                randomSession = (int) (Math.random() * (sessionMax - sessionMin + 1) + sessionMin);
+
+                String day = DAYS_OF_THE_WEEK[randomDay - 1];
+
+                // periods array of class, staff
+                String[] classTempTable = classTable.get(day).clone();
+                String[] staff1TempTable = staff1Table.get(day).clone();
+
+                if(staff2 == null){
+                    // for most THEORY subjects, staff2 will be null
+                    if(numberOfTimes > 75){
+                        Log.d("omitted", className + " / " + subject);
+                        spotted = true;
+                    }
+
+                    else{
+                        // checking for constraints
+                        // class
+                        if(utility.overAllClassConstraints(className, classTempTable, randomSession, subject, day)){
+                            // staff
+                            if(utility.overAllConstraintsForAStaff(staff1TempTable, randomSession, 1)){
+                                // slot is ready for allocation
+                                // altering the arrays
+                                // class
+                                classTempTable[randomSession] = subject;
+                                staff1TempTable[randomSession] = className;
+
+                                // replacing the original arrays with the modified arrays
+                                classTable.replace(day, classTempTable);
+                                staff1Table.replace(day, staff1TempTable);
+
+                                // altering the short form arrays of the class
+                                String[] classTemp = Class.allClasses.get(classPosition).getShortFormSchedule().get(day).clone();
+                                classTemp[randomSession] = shortForm;
+                                Class.allClasses.get(classPosition).getShortFormSchedule().replace(day, classTemp);
+
+                                // altering the subjects array for the staff
+                                String[] temp = staff.allStaffs.get(staff1Position).getSubjectsSchedule().get(day).clone();
+                                temp[randomSession] = subject;
+                                staff.allStaffs.get(staff1Position).getSubjectsSchedule().replace(day, temp);
+
+                                Log.d(SUBJECTS_GENERATED, (i + 1) + " / " + className + " / " + subject );
+                                spotted = true;
+                            }
+                        }
+                    }
+                }
+
+                else{
+                    // staff2 is not null
+                    spotted = true;
                 }
 
                 numberOfTimes++;

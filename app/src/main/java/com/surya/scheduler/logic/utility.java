@@ -13,6 +13,9 @@ import static com.surya.scheduler.constants.settings.LABORATORY_MORNING_SESSIONS
 import static com.surya.scheduler.constants.settings.MAXIMUM_PERIODS_FOR_A_STAFF_PER_DAY;
 import static com.surya.scheduler.constants.settings.MAXIMUM_PERIODS_FOR_A_STAFF_PER_DAY_WITH_LAB;
 import static com.surya.scheduler.constants.settings.NUMBER_OF_PERIODS_PER_DAY;
+import static com.surya.scheduler.constants.status.SUBJECT_REPEATED;
+
+import android.util.Log;
 
 import com.surya.scheduler.models.offline.Class;
 import com.surya.scheduler.models.offline.paired;
@@ -61,16 +64,25 @@ public class utility {
         String staff2 = null;
         String lab1Name = null;
 
-        /*Getting the staff details*/
-        for(staff Staff : staff.allStaffs){
-            if(teachersCombo.contains(Staff.getName())){
-                if(staff1 == null){
-                    staff1 = Staff.getName();
-                }
-                else{
-                    if(! Staff.getName().equals(staff1)){
-                        if(staff2 == null){
-                            staff2 = Staff.getName();
+        if(teachersCombo.contains("@")){
+            // "Mrs. C Karpagavalli+Mrs. Archana V Nair S+"+CSE_LAB_2+STAND_ALONE,
+            String[] temp = teachersCombo.split("@");
+            staff1 = temp[0];
+            staff2 = temp[1];
+        }
+
+        else{
+            /*Getting the staff details*/
+            for(staff Staff : staff.allStaffs){
+                if(teachersCombo.contains(Staff.getName())){
+                    if(staff1 == null){
+                        staff1 = Staff.getName();
+                    }
+                    else{
+                        if(! Staff.getName().equals(staff1)){
+                            if(staff2 == null){
+                                staff2 = Staff.getName();
+                            }
                         }
                     }
                 }
@@ -236,38 +248,106 @@ public class utility {
     }
 
     // method to check if the subject is already there
-    // a subject can be allocated twice in day, that too only once in a week
-    public boolean isTheSubjectRepeated(String className, String subject){
+    // a subject can be allocated twice in a day, that too only once in a week
+    public boolean isTheSubjectRepeated(String className, String subject, String dayx){
+        boolean alreadyRepeated = false;
+
         if(paired.subjectRepeatedForClass.containsKey(className + subject)){
-            // particular subject is allocated twice on a given day
-            return true;
+            // if the key is present, that means this subject is already allocated twice on some day
+            // now if dayx == day, we can straightly return true
+            // as, already allocated twice so there is no need of any checking
+            String inDay = paired.subjectRepeatedForClass.get(className + subject);
+            alreadyRepeated = true;
+            if(dayx.equals(inDay)){
+                return true;
+            }
+        }
+
+        // hash table for the class
+        Hashtable<String, String[]> classTable = returnClassSchedule(className);
+
+        if(alreadyRepeated){
+            // means the subject is allocated twice on some day
+            // so just checking if the subject is already there on the day, dayx
+            String[] periods = classTable.get(dayx).clone();
+            for(String period : periods){
+                if(period.equals(subject)){
+                    // means the subject is already allocated once in that day
+                    // so cannot be done yet another time
+                    return true;
+                }
+            }
+
+            // subject is not yet allocated on that day dayx
+            // so can be allocated
+            return false;
         }
 
         else{
-            // hash table for the class
-            Hashtable<String, String[]> classTable = returnClassSchedule(className);
-
-            // going through the hash table
+            // subject is not yet allocated twice, not yet logged in the paired class to say the least
+            // going through the class hash table
+            boolean repeated = false;
             for(String day : DAYS_OF_THE_WEEK){
                 String[] periods = classTable.get(day).clone();
                 int count = 0;
 
-                for(String period : periods){
-                    if(period.contains(subject)){
+                for(int i = 0; i < periods.length; i++){
+                    if(periods[i].equals(subject)){
                         count++;
 
                         if(count > 1){
-                            // means the subject is allocated twice on a given day
-                            paired.subjectRepeatedForClass.put(className + subject, className);
+                            repeated = true;
+                            // entering the details into the paired class
+                            paired.subjectRepeatedForClass.put(className + subject, day);
+                            Log.d(SUBJECT_REPEATED, className + " / " + subject + " / " + day);
+                        }
+                    }
+                }
+            }
+
+            if(repeated){
+                // means the subject is repeated on some day of the week
+                // means, the subject can be allocated only once hereafter no matter what
+                String[] periods = classTable.get(dayx).clone();
+                int count = 0;
+
+                for(String period : periods){
+                    if(period.equals(subject)){
+                        count++;
+
+                        if(count >= 1){
+                            // means the subject is allocated once or more than once
                             return true;
                         }
                     }
                 }
+
+                // subject is not allocated at all
+                return false;
             }
         }
 
         // the subject is not allocated twice on any given day in a week
         return false;
+    }
+
+    // method to check if the subject to be allocated is already present before or after the given slot
+    public boolean isTheSubjectContinuous(String[] periods, int slot, String subject){
+        if(slot == 0){
+            // first period
+            // then, the second period must not be this subject
+            return (! (periods[1].contains(subject)));
+        }
+        else if(slot == NUMBER_OF_PERIODS_PER_DAY - 1){
+            // last period
+            // then, the period before that must not be this subject
+            return (! (periods[NUMBER_OF_PERIODS_PER_DAY - 2].contains(subject)));
+        }
+        else{
+            // some random period
+            // then, the period before or after that slot must not contain the subject
+            return ((! (periods[slot - 1].contains(subject))) && (! (periods[slot + 1].contains(subject))));
+        }
     }
 
     /*Method used to check if a lab is already assigned to the class in the particular day*/
@@ -290,8 +370,8 @@ public class utility {
         return ( (labsSlotChecker(schedule, session)) && (! isALabAlreadyThere(schedule)));
     }
 
-    public boolean overAllClassConstraints(String className, String[] periods, int slot, String subject){
-        return ( (isTheSlotFree(periods, slot)) && (! (isTheSubjectRepeated(className, subject))));
+    public boolean overAllClassConstraints(String className, String[] periods, int slot, String subject, String day){
+        return ( (isTheSlotFree(periods, slot)) && (! (isTheSubjectRepeated(className, subject, day))) && (isTheSubjectContinuous(periods, slot, subject)));
     }
 
     /***********************************************************************************************************************************/
@@ -346,6 +426,10 @@ public class utility {
     }
 
     // overall constraints for a staff
+    public boolean overAllConstraintsForAStaffLab(String[] periods, String session, int number){
+        return ( (labsSlotChecker(periods, session)) && (dailyWorkingHoursOfAStaff(periods, number)) );
+    }
+
     public boolean overAllConstraintsForAStaff(String[] periods, int slot, int number){
         // number - number of hours for a subject
         return ( (isTheSlotFree(periods, slot)) && (dailyWorkingHoursOfAStaff(periods, number)) && (isTheSlotOkayForTheStaff(periods, slot)));

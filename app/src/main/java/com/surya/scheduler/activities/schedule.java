@@ -97,7 +97,7 @@ public class schedule extends AppCompatActivity {
             for(Class classes : Class.allClasses){
                 if(classes.getName().equals(className)){
                     int num = 0;
-                    Hashtable<String, String[]> table = classes.getSchedule();
+                    Hashtable<String, String[]> table = classes.getShortFormSchedule();
 
                     for(String x : DAYS_OF_THE_WEEK){
                         String[] temp = table.get(x).clone();

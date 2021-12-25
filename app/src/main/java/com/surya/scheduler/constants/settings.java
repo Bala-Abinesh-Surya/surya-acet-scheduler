@@ -8,7 +8,7 @@ public class settings {
     public static int NUMBER_OF_PERIODS_PER_DAY = 7;
 
     // maximum number of periods for a staff per day
-    public static int MAXIMUM_PERIODS_FOR_A_STAFF_PER_DAY_WITH_LAB = 5;
+    public static int MAXIMUM_PERIODS_FOR_A_STAFF_PER_DAY_WITH_LAB = 4;
     public static int MAXIMUM_PERIODS_FOR_A_STAFF_PER_DAY = 3;
 
     // number of periods for a subject with LECTURE tag
