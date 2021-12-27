@@ -25,10 +25,14 @@ public class status {
     public static final String GENERATE_THEORY_COMPLETED = "Generate Theory Completed";
     public static final String GENERATE_PAIRED_SUBJECTS_COMPLETED = "Generate Paired Subjects Completed";
     public static final String PAIRED_INSTANCE_CREATED = "Paired Instance Created";
+    public static final String OMITTED_INSTANCE_CREATED = "Omitted Instance Created";
+    public static final String REALLOCATION_THEORY_OVER = "Re-Allocation Thoery Subjects Over";
 
     public static final String STAND_ALONE_LAB_GENERATED = "standAloneLab";
     public static final String PAIRED_LAB_GENERATED = "pairedLab";
     public static final String SUBJECTS_GENERATED = "subjectsAllocated";
+    public static final String OMITTED_SUBJECTS = "omittedSubjects";
+    public static final String REALLOCATED_SUBJECTS = "reallocated";
 
     // subject repeated constant
     public static final String SUBJECT_REPEATED = "repeatedPaadangal";

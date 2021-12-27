@@ -9,6 +9,10 @@ android {
 
     signingConfigs {
         release {
+            storeFile file('D:\\scheduler\\keystore\\release.jks')
+            storePassword 'githubAccount@2021'
+            keyAlias 'release'
+            keyPassword 'githubAccount@2021'
         }
     }
     compileSdk 31
@@ -52,7 +56,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:20.0.3'
 
     /*Gson dependencies*/
-    implementation 'com.google.code.gson:gson:2.8.8'
+    implementation 'com.google.code.gson:gson:2.8.9'
 
     // excel dependency
     implementation 'net.sourceforge.jexcelapi:jxl:2.6.12'

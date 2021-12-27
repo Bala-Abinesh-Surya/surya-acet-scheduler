@@ -31,7 +31,7 @@ import com.surya.scheduler.activities.splash_screen;
 import com.surya.scheduler.adapters.all_classes_recViewAdapter;
 import com.surya.scheduler.models.offline.Class;
 
-public class all_classes_fragment extends Fragment {
+public class all_classes_fragment extends Fragment implements splash_screen.notifyAllClassesAdded{
 
     private RecyclerView recyclerView;
     private all_classes_recViewAdapter adapter;
@@ -64,6 +64,7 @@ public class all_classes_fragment extends Fragment {
             public void onClick(View v) {
                 // going to the top of the recyclerView
                 recyclerView.smoothScrollToPosition(0);
+                adapter.setAllClasses(Class.allClasses);
             }
         });
 
@@ -87,4 +88,9 @@ public class all_classes_fragment extends Fragment {
 
         }
     };
+
+    @Override
+    public void notifyTheAdapter() {
+        adapter.notifyDataSetChanged();
+    }
 }

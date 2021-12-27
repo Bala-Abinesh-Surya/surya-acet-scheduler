@@ -4,6 +4,7 @@ import static com.surya.scheduler.constants.data.ALL_CLASSES_DETAILS;
 import static com.surya.scheduler.constants.data.ALL_LABS_DETAILS;
 import static com.surya.scheduler.constants.data.ALL_STAFFS_DETAILS;
 import static com.surya.scheduler.constants.data.DAYS_OF_THE_WEEK;
+import static com.surya.scheduler.constants.settings.NUMBER_OF_PERIODS_PER_DAY;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
@@ -41,36 +42,44 @@ public class update {
                 .setValue("duplicate");
 
         for(Class classes : Class.allClasses){
+            // class details
             String className = classes.getName();
             String department = classes.getDepartment();
             int year = classes.getYear();
             int numberOfStudents = classes.getNumberOfStudents();
+
             List<String> staffs = Arrays.asList(classes.getTeachers());
-            String[] schedules = new String[6];
+            String[] schedules = new String[NUMBER_OF_PERIODS_PER_DAY];
+            String[] shortFormArray = new String[NUMBER_OF_PERIODS_PER_DAY];
 
             /*Converting the schedules to the array of json strings*/
             int index = 0;
             for(String day : DAYS_OF_THE_WEEK){
-                String[] temp = new String[3];
+                String[] temp = classes.getSchedule().get(day).clone();
+                String[] temp1 = classes.getShortFormSchedule().get(day).clone();
 
                 /*converting the temp[] to json file first*/
                 String json = gson.toJson(temp);
+                String json1 = gson.toJson(temp1);
 
                 /*adding the file to the array*/
                 schedules[index] = json;
+                shortFormArray[index] = json1;
                 index++;
             }
 
             /*Firebase wont support arrays... so converting the array to List*/
             List<String> finalSchedules = Arrays.asList(schedules);
+            List<String> shortFormSchedule = Arrays.asList(shortFormArray);
 
-            /*public firebase_class(String className, String department, int year, int numberOfStudents, List<String> staffs, List<String> schedules) {
+            /*public firebase_class(String className, String department, int year, int numberOfStudents, List<String> staffs, List<String> schedules, List<String> shortForm) {
                 this.className = className;
                 this.department = department;
                 this.year = year;
                 this.numberOfStudents = numberOfStudents;
                 this.staffs = staffs;
                 this.schedules = schedules;
+                this.shortForm = shortForm;
             }*/
 
             /*creating an object for the firebase_class*/
@@ -80,7 +89,8 @@ public class update {
                     year,
                     numberOfStudents,
                     staffs,
-                    finalSchedules
+                    finalSchedules,
+                    shortFormSchedule
             );
 
             /*updating in the firebase*/
@@ -105,31 +115,39 @@ public class update {
             String department = Staff.getDepartment();
             int workingHours = Staff.getWorkingHours();
             boolean constraints = Staff.isHasConstraints();
-            String[] schedule = new String[6];
+
+            String[] schedule = new String[NUMBER_OF_PERIODS_PER_DAY];
+            String[] subjectsArray = new String[NUMBER_OF_PERIODS_PER_DAY];
 
             /*Converting the schedules to the array of json strings*/
             int index = 0;
             for(String day : DAYS_OF_THE_WEEK){
-                String[] temp = new String[2];
+                String[] temp = Staff.getSchedule().get(day).clone();
+                String[] temp1 = Staff.getSubjectsSchedule().get(day).clone();
 
                 /*converting the array to json*/
                 String json = gson.toJson(temp);
+                String json1 = gson.toJson(temp1);
 
                 /*adding json to the array*/
                 schedule[index] = json;
+                subjectsArray[index] = json1;
+
                 index++;
             }
 
             /*Converting the array to list*/
             List<String> finalSchedules = Arrays.asList(schedule);
+            List<String> subjectsSchedule = Arrays.asList(subjectsArray);
 
             /*creating an object for firebase_staff class*/
-            /* firebase_staff(String name, String department, boolean hasConstraints, int workingHours, List<String> schedules) {
+            /*public firebase_staff(String name, String department, boolean hasConstraints, int workingHours, List<String> schedules, List<String> subjectSchedules) {
                 this.name = name;
                 this.department = department;
                 this.hasConstraints = hasConstraints;
                 this.workingHours = workingHours;
                 this.schedules = schedules;
+                this.subjectSchedules = subjectSchedules;
             }*/
 
             firebase_staff firebase_staff = new firebase_staff(
@@ -137,7 +155,8 @@ public class update {
                     department,
                     constraints,
                     workingHours,
-                    finalSchedules
+                    finalSchedules,
+                    subjectsSchedule
             );
 
             /*updating in the database*/
@@ -162,13 +181,13 @@ public class update {
             String labName = Room.getName();
             boolean isLab = Room.isLab();
             String department = Room.getDepartment();
-            String[] schedule = new String[6];
+            String[] schedule = new String[NUMBER_OF_PERIODS_PER_DAY];
 
             if(isLab){
                 /*converting the labs schedules to jso file*/
                 int index = 0;
                 for(String day : DAYS_OF_THE_WEEK){
-                    String[] temp = new String[4];
+                    String[] temp = Room.getSchedule().get(day).clone();
 
                     /*converting the array to json file*/
                     String json = gson.toJson(temp);

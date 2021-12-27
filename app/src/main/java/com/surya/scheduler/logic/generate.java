@@ -1,7 +1,10 @@
 package com.surya.scheduler.logic;
 
 import static com.surya.scheduler.constants.data.AFTERNOON;
+import static com.surya.scheduler.constants.data.ALLOWED;
+import static com.surya.scheduler.constants.data.CONTINUOUS;
 import static com.surya.scheduler.constants.data.DAYS_OF_THE_WEEK;
+import static com.surya.scheduler.constants.data.FREE;
 import static com.surya.scheduler.constants.data.LAB;
 import static com.surya.scheduler.constants.data.LECTURE;
 import static com.surya.scheduler.constants.data.MONDAY;
@@ -11,14 +14,20 @@ import static com.surya.scheduler.constants.data.SHORT_FORM_SUBJECTS;
 import static com.surya.scheduler.constants.data.STAND_ALONE;
 import static com.surya.scheduler.constants.data.SUBJECTS;
 import static com.surya.scheduler.constants.settings.LABORATORY_MORNING_SESSIONS_PERIODS;
+import static com.surya.scheduler.constants.settings.NUMBER_OF_ATTEMPTS_BEFORE_OMITTED;
+import static com.surya.scheduler.constants.settings.NUMBER_OF_ATTEMPTS_BEFORE_OMITTED_LAB;
+import static com.surya.scheduler.constants.settings.NUMBER_OF_ATTEMPTS_BEFORE_SPECIAL_ALLOCATION;
 import static com.surya.scheduler.constants.settings.NUMBER_OF_PERIODS_LECTURE;
 import static com.surya.scheduler.constants.settings.NUMBER_OF_PERIODS_PER_DAY;
 import static com.surya.scheduler.constants.status.GENERATE_LABS_COMPLETED;
 import static com.surya.scheduler.constants.status.GENERATE_PAIRED_SUBJECTS_COMPLETED;
 import static com.surya.scheduler.constants.status.GENERATE_STATUS;
 import static com.surya.scheduler.constants.status.GENERATE_THEORY_COMPLETED;
+import static com.surya.scheduler.constants.status.OMITTED_SUBJECTS;
 import static com.surya.scheduler.constants.status.PAIRED_INSTANCE_CREATED;
 import static com.surya.scheduler.constants.status.PAIRED_LAB_GENERATED;
+import static com.surya.scheduler.constants.status.REALLOCATED_SUBJECTS;
+import static com.surya.scheduler.constants.status.REALLOCATION_THEORY_OVER;
 import static com.surya.scheduler.constants.status.STAND_ALONE_LAB_GENERATED;
 import static com.surya.scheduler.constants.status.SUBJECTS_GENERATED;
 
@@ -26,6 +35,7 @@ import android.util.Log;
 
 import com.surya.scheduler.models.offline.Class;
 import com.surya.scheduler.models.offline.lab_periods;
+import com.surya.scheduler.models.offline.omitted_subject;
 import com.surya.scheduler.models.offline.paired;
 import com.surya.scheduler.models.offline.room;
 import com.surya.scheduler.models.offline.staff;
@@ -33,6 +43,7 @@ import com.surya.scheduler.storage.store;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Locale;
 import java.util.concurrent.Callable;
 
 public class generate {
@@ -65,6 +76,9 @@ public class generate {
 
         // generating slots for the theory subjects
         generateTheorySchedule();
+
+        // generating slots for the omitted subjects
+        generateOmittedSubjectsSchedule();
     }
 
     /*This generate class must be a singleton class*/
@@ -251,7 +265,7 @@ public class generate {
 
         boolean spotted = false;
         int numberOfTimes = 0;
-        String subjectShortForm = SUBJECTS[shortFormIndex];
+        String subjectShortForm = SHORT_FORM_SUBJECTS[shortFormIndex];
 
         while(! spotted){
             /*Using Random method generating random numbers to denote the day of the week and session*/
@@ -275,7 +289,7 @@ public class generate {
             String[] staff1TempTable = staffTable1.get(day).clone();
             String[] labTempTable = labTable.get(day).clone();
 
-            if(numberOfTimes > 50){
+            if(numberOfTimes > NUMBER_OF_ATTEMPTS_BEFORE_OMITTED_LAB){
                 spotted = true;
             }
 
@@ -394,7 +408,7 @@ public class generate {
                 String[] lab1TempTable = lab1Table.get(day).clone();
                 String[] lab2TempTable = lab2Table.get(day).clone();
 
-                if(numberOfTimes > 50){
+                if(numberOfTimes > NUMBER_OF_ATTEMPTS_BEFORE_OMITTED_LAB){
                     spotted = true;
                 }
                 else{
@@ -606,7 +620,7 @@ public class generate {
                 String[] staff1TempTable = staff1Table.get(day).clone();
                 String[] staff2TempTable = staff2Table.get(day).clone();
 
-                if(numberOfTimes > 150){
+                if(numberOfTimes > NUMBER_OF_ATTEMPTS_BEFORE_OMITTED){
                     spotted = true;
                 }
 
@@ -632,6 +646,12 @@ public class generate {
                                     class2Table.replace(day, class2TempTable);
                                     staff1Table.replace(day, staff1TempTable);
                                     staff2Table.replace(day, staff2TempTable);
+
+                                    // altering the hash table
+                                    Class.allClasses.get(class1Position).setSchedule(class1Table);
+                                    Class.allClasses.get(class2Position).setSchedule(class2Table);
+                                    staff.allStaffs.get(staff1Position).setSchedule(staff1Table);
+                                    staff.allStaffs.get(staff2Position).setSchedule(staff2Table);
 
                                     // altering the short form arrays of the classes
                                     // class1
@@ -726,7 +746,7 @@ public class generate {
 
                                 generateTheorySchedule(
                                         name,
-                                        subject,
+                                        rawSubject,
                                         count,
                                         staff1,
                                         staff2
@@ -801,8 +821,25 @@ public class generate {
 
                 if(staff2 == null){
                     // for most THEORY subjects, staff2 will be null
-                    if(numberOfTimes > 75){
-                        Log.d("omitted", className + " / " + subject);
+                    if(numberOfTimes > NUMBER_OF_ATTEMPTS_BEFORE_OMITTED){
+                        // adding the subject to the omitted_subject list
+                        /*public omitted_subject(String className, String subjectName, String subjectShortForm, String staff1, String staff2) {
+                            this.className = className;
+                            this.subjectName = subjectName;
+                            this.subjectShortForm = subjectShortForm;
+                            this.staff1 = staff1;
+                            this.staff2 = staff2;
+                        }*/
+                        omitted_subject.omitted_subjects.add(new omitted_subject(
+                                className,
+                                subject,
+                                shortForm,
+                                staff1,
+                                staff2
+                        ));
+
+                        Log.d(OMITTED_SUBJECTS, className + " / " + subject);
+
                         spotted = true;
                     }
 
@@ -821,6 +858,10 @@ public class generate {
                                 // replacing the original arrays with the modified arrays
                                 classTable.replace(day, classTempTable);
                                 staff1Table.replace(day, staff1TempTable);
+
+                                // altering the hash table
+                                Class.allClasses.get(classPosition).setSchedule(classTable);
+                                staff.allStaffs.get(staff1Position).setSchedule(staff1Table);
 
                                 // altering the short form arrays of the class
                                 String[] classTemp = Class.allClasses.get(classPosition).getShortFormSchedule().get(day).clone();
@@ -841,11 +882,244 @@ public class generate {
 
                 else{
                     // staff2 is not null
-                    spotted = true;
+                    if(numberOfTimes > NUMBER_OF_ATTEMPTS_BEFORE_OMITTED){
+                        // adding the subject to the omitted_subject list
+                        /*public omitted_subject(String className, String subjectName, String subjectShortForm, String staff1, String staff2) {
+                            this.className = className;
+                            this.subjectName = subjectName;
+                            this.subjectShortForm = subjectShortForm;
+                            this.staff1 = staff1;
+                            this.staff2 = staff2;
+                        }*/
+                        omitted_subject.omitted_subjects.add(new omitted_subject(
+                                className,
+                                subject,
+                                shortForm,
+                                staff1,
+                                staff2
+                        ));
+
+                        Log.d(OMITTED_SUBJECTS, className + " / " + subject);
+
+                        spotted = true;
+                    }
+
+                    else{
+                        String[] staff2TempTable = staff2Table.get(day).clone();
+
+                        // checking for constraints
+                        // class
+                        if(utility.overAllClassConstraints(className, classTempTable, randomSession, subject, day)){
+                            // staff1
+                            if(utility.overAllConstraintsForAStaff(staff1TempTable, randomSession, 1)){
+                                // staff2
+                                if(utility.overAllConstraintsForAStaff(staff2TempTable, randomSession, 1)){
+                                    // slot is ready for allocation
+                                    // altering the arrays
+                                    // class
+                                    classTempTable[randomSession] = subject;
+                                    staff1TempTable[randomSession] = className;
+                                    staff2TempTable[randomSession] = className;
+
+                                    // replacing the original arrays with the modified arrays
+                                    classTable.replace(day, classTempTable);
+                                    staff1Table.replace(day, staff1TempTable);
+                                    staff2Table.replace(day, staff2TempTable);
+
+                                    // altering the hash table
+                                    Class.allClasses.get(classPosition).setSchedule(classTable);
+                                    staff.allStaffs.get(staff1Position).setSchedule(staff1Table);
+                                    staff.allStaffs.get(staff2Position).setSchedule(staff2Table);
+
+                                    // altering the short form arrays of the class
+                                    String[] classTemp = Class.allClasses.get(classPosition).getShortFormSchedule().get(day).clone();
+                                    classTemp[randomSession] = shortForm;
+                                    Class.allClasses.get(classPosition).getShortFormSchedule().replace(day, classTemp);
+
+                                    // altering the subjects array for the staff
+                                    String[] temp = staff.allStaffs.get(staff1Position).getSubjectsSchedule().get(day).clone();
+                                    temp[randomSession] = subject;
+                                    staff.allStaffs.get(staff1Position).getSubjectsSchedule().replace(day, temp);
+
+                                    temp = staff.allStaffs.get(staff2Position).getSubjectsSchedule().get(day).clone();
+                                    temp[randomSession] = subject;
+                                    staff.allStaffs.get(staff2Position).getSubjectsSchedule().replace(day, temp);
+
+                                    Log.d(SUBJECTS_GENERATED, (i + 1) + " / " + className + " / " + subject );
+                                    spotted = true;
+                                }
+                            }
+                        }
+                    }
                 }
 
                 numberOfTimes++;
             }
         }
+    }
+
+    // method to generate slots for omitted subjects
+    private void generateOmittedSubjectsSchedule(){
+        // going through the omitted_subject array list
+        int index = omitted_subject.omitted_subjects.size() - 1;
+
+        while (omitted_subject.omitted_subjects.size() != 0){
+            // omitted_subject details
+            omitted_subject omittedSubject = omitted_subject.omitted_subjects.get(index);
+
+          /*  public omitted_subject(String className, String subjectName, String subjectShortForm, String staff1, String staff2) {
+                this.className = className;
+                this.subjectName = subjectName;
+                this.subjectShortForm = subjectShortForm;
+                this.staff1 = staff1;
+                this.staff2 = staff2;
+            } */
+
+            String className = omittedSubject.getClassName();
+            String omittedSubjectName = omittedSubject.getSubjectName();
+            String omittedSubjectShortForm = omittedSubject.getSubjectShortForm();
+            String omittedSubjectStaff1 = omittedSubject.getStaff1();
+            String omittedSubjectStaff2 = omittedSubject.getStaff2();
+
+            // hash table for the class, staffs
+            Hashtable<String, String[]> omittedClassTable = utility.returnClassSchedule(className);
+            Hashtable<String, String[]> omittedStaff1Table = utility.returnStaffSchedule(omittedSubjectStaff1);
+            Hashtable<String, String[]> omittedStaff2Table = new Hashtable<>();
+            if(! (omittedSubjectStaff2 == null)){
+                omittedStaff2Table = utility.returnStaffSchedule(omittedSubjectStaff2);
+            }
+
+            // position indicators
+            int omittedClassPosition = utility.returnClassPosition(className);
+            int omittedStaff1Position = utility.returnStaffPosition(omittedSubjectStaff1);
+            int omittedStaff2Position = 0;
+            if(! (omittedSubjectStaff2 == null)){
+                omittedStaff2Position = utility.returnStaffPosition(omittedSubjectStaff2);
+            }
+
+            // generating random slots
+            // if the slot if FREE and meets the constraints, allocating the subject to that slot
+            // else, doing something new
+            boolean spotted = false;
+
+            while (! spotted){
+                /*Using Random method generating random numbers to denote the day of the week and session*/
+                int randomDay = 0;
+                int randomSession = 0;
+
+                int dayMin = 1;
+                int dayMax = 6; // saturday
+
+                int sessionMin = 0;
+                int sessionMax = NUMBER_OF_PERIODS_PER_DAY - 1;
+
+                randomDay = (int) (Math.random() * (dayMax - dayMin + 1) + dayMin);
+                randomSession = (int) (Math.random() * (sessionMax - sessionMin + 1) + sessionMin);
+
+                String day = DAYS_OF_THE_WEEK[randomDay - 1];
+
+                // periods array of class, staff
+                String[] omittedClassTempTable = omittedClassTable.get(day).clone();
+                String[] omittedStaff1TempTable = omittedStaff1Table.get(day).clone();
+
+                // checking if the slot is FREE
+                // checking the constraints
+                if(omittedSubjectStaff2 == null){
+                    // class
+                    if(utility.overAllClassConstraints(className, omittedClassTempTable, randomSession, omittedSubjectName, day)){
+                        // staff
+                        if(utility.overAllConstraintsForAStaff(omittedStaff1TempTable, randomSession, 1)){
+                            // slot is ready for allocation
+                            // altering the arrays of the class
+                            omittedClassTempTable[randomSession] = omittedSubjectName;
+                            omittedStaff1TempTable[randomSession] = className;
+
+                            // replacing the original arrays with the modified ones
+                            omittedClassTable.replace(day, omittedClassTempTable);
+                            omittedStaff1Table.replace(day, omittedStaff1TempTable);
+
+                            // replacing the hash table
+                            Class.allClasses.get(omittedClassPosition).setSchedule(omittedClassTable);
+                            staff.allStaffs.get(omittedStaff1Position).setSchedule(omittedStaff1Table);
+
+                            // altering the short form array of the class
+                            String[] omittedClassTemp = Class.allClasses.get(omittedClassPosition).getShortFormSchedule().get(day).clone();
+                            omittedClassTemp[randomSession] = omittedSubjectShortForm;
+                            Class.allClasses.get(omittedClassPosition).getShortFormSchedule().replace(day, omittedClassTemp);
+
+                            // altering the subject name schedule of the staff
+                            String[] omittedStaffTemp = staff.allStaffs.get(omittedStaff1Position).getSubjectsSchedule().get(day).clone();
+                            omittedStaffTemp[randomSession] = omittedSubjectName;
+                            staff.allStaffs.get(omittedStaff1Position).getSubjectsSchedule().replace(day, omittedStaffTemp);
+
+                            Log.d(REALLOCATED_SUBJECTS, className + " / " + omittedSubjectName + " / " + omittedSubjectStaff1);
+                            spotted = true;
+                        }
+                    }
+                }
+
+                else{
+                    // omittedSubjectStaff2 is not null
+                    String[] omittedStaff2TempTable = omittedStaff2Table.get(day).clone();
+
+                    // class
+                    if(utility.overAllClassConstraints(className, omittedClassTempTable, randomSession, omittedSubjectName, day)){
+                        // staff1
+                        if(utility.overAllConstraintsForAStaff(omittedStaff1TempTable, randomSession, 1)){
+                            // staff2
+                            if(utility.overAllConstraintsForAStaff(omittedStaff2TempTable, randomSession, 1)){
+                                // slot is ready for allocation
+                                // altering the arrays of the class
+                                omittedClassTempTable[randomSession] = omittedSubjectName;
+                                omittedStaff1TempTable[randomSession] = className;
+                                omittedStaff2TempTable[randomSession] = className;
+
+                                // replacing the original arrays with the modified ones
+                                omittedClassTable.replace(day, omittedClassTempTable);
+                                omittedStaff1Table.replace(day, omittedStaff1TempTable);
+                                omittedStaff2Table.replace(day, omittedStaff2TempTable);
+
+                                // replacing the hash table
+                                Class.allClasses.get(omittedClassPosition).setSchedule(omittedClassTable);
+                                staff.allStaffs.get(omittedStaff1Position).setSchedule(omittedStaff1Table);
+                                staff.allStaffs.get(omittedStaff2Position).setSchedule(omittedStaff2Table);
+
+                                // altering the short form array of the class
+                                String[] omittedClassTemp = Class.allClasses.get(omittedClassPosition).getShortFormSchedule().get(day).clone();
+                                omittedClassTemp[randomSession] = omittedSubjectShortForm;
+                                Class.allClasses.get(omittedClassPosition).getShortFormSchedule().replace(day, omittedClassTemp);
+
+                                // altering the subject name schedule of the staff
+                                String[] omittedStaffTemp = staff.allStaffs.get(omittedStaff1Position).getSubjectsSchedule().get(day).clone();
+                                omittedStaffTemp[randomSession] = omittedSubjectName;
+                                staff.allStaffs.get(omittedStaff1Position).getSubjectsSchedule().replace(day, omittedStaffTemp);
+
+                                String[] omittedStaff2Temp = staff.allStaffs.get(omittedStaff2Position).getSubjectsSchedule().get(day).clone();
+                                omittedStaff2Temp[randomSession] = omittedSubjectName;
+                                staff.allStaffs.get(omittedStaff2Position).getSubjectsSchedule().replace(day, omittedStaff2Temp);
+
+                                Log.d(REALLOCATED_SUBJECTS, className + " / " + omittedSubjectName + " / " + omittedSubjectStaff1);
+                                spotted = true;
+                            }
+                        }
+                    }
+                }
+
+                if(! spotted){
+                    // this spot is already allocated to some other subject
+                    // or the slot is FREE (for the class, may be the staff) but it does not meet the constraints
+
+                }
+
+                spotted = true;
+                omitted_subject.omitted_subjects.remove(omittedSubject);
+
+                Log.d("dexter", omittedSubjectName + "removed" + "length now : " + omitted_subject.omitted_subjects.size());
+            }
+
+            index--;
+        }
+
+        Log.d(GENERATE_STATUS, REALLOCATION_THEORY_OVER);
     }
 }

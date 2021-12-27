@@ -41,6 +41,7 @@ public class paired {
     public static paired getPairedInstance(){
         if(instance == null){
             instance = new paired();
+            omitted_subject.getInstance();
             Log.d(GENERATE_STATUS, PAIRED_INSTANCE_CREATED);
 
             setUpPeriodsArray();

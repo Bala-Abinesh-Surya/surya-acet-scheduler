@@ -18,4 +18,9 @@ public class settings {
     // as of now, the periods are based on the 7 periods per day basis
     public static int[] LABORATORY_MORNING_SESSIONS_PERIODS = new int[]{0, 1, 2};
     public static int[] LABORATORY_AFTERNOON_SESSION_PERIODS = new int[]{4, 5, 6};
+
+    // maximum attempts before going into omitted_subject array list
+    public static int NUMBER_OF_ATTEMPTS_BEFORE_OMITTED = 150;
+    public static int NUMBER_OF_ATTEMPTS_BEFORE_OMITTED_LAB = 50;
+    public static int NUMBER_OF_ATTEMPTS_BEFORE_SPECIAL_ALLOCATION = 50;
 }

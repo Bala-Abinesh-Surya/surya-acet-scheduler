@@ -100,12 +100,12 @@ public class stats_activity extends AppCompatActivity {
             }
 
             /*Getting the schedule for the class*/
-            Hashtable<String, String[]> classTable = classTable = Class.allClasses.get(classPosition).getSchedule();
+            Hashtable<String, String[]> classTable = Class.allClasses.get(classPosition).getSchedule();
 
             /*hashtable containing number of sessions of each subject*/
             Hashtable<String, Integer> details = new Hashtable<>();
             for(String day : DAYS_OF_THE_WEEK){
-                String[] schedule = classTable.get(day);
+                String[] schedule = classTable.get(day).clone();
 
                 for(String period : schedule){
                     if(period.contains("/") && (period.contains(LAB) || period.contains(LAB1))){

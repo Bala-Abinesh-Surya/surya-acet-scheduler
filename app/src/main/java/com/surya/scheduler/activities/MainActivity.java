@@ -32,6 +32,7 @@ import com.surya.scheduler.activities.editing_stuffs.staffs.swap_time_table;
 import com.surya.scheduler.activities.removing_stuffs.classes.remove_a_class;
 import com.surya.scheduler.activities.removing_stuffs.staff.remove_staffs;
 import com.surya.scheduler.adapters.fragmentAdapter;
+import com.surya.scheduler.firebase.update;
 import com.surya.scheduler.models.offline.Class;
 import com.surya.scheduler.models.offline.room;
 import com.surya.scheduler.models.offline.staff;
@@ -146,15 +147,14 @@ public class MainActivity extends AppCompatActivity {
         }
         /*Update the database menu*/
         else if (itemId == R.id.main_menu_update) {
-            /*Toast.makeText(getApplicationContext(), "Updating to Firebase", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Updating to Firebase", Toast.LENGTH_SHORT).show();
 
-                update update = new update();
-                update.updateAllClasses();
-                update.updateAllStaffs();
-                update.updateAllLabsSchedules();
+            update update = new update();
+            update.updateAllClasses();
+            update.updateAllStaffs();
+            update.updateAllLabsSchedules();
 
-                Toast.makeText(getApplicationContext(), "Update completed", Toast.LENGTH_SHORT).show();*/
-            String bala = ";;";
+            Toast.makeText(getApplicationContext(), "Update completed", Toast.LENGTH_SHORT).show();
         }
         return true;
     }
@@ -193,6 +193,8 @@ public class MainActivity extends AppCompatActivity {
 
         /*Method to initialise all the UI Elements*/
         init();
+
+        Toast.makeText(this, Class.allClasses.size() +"", Toast.LENGTH_SHORT).show();
 
         //Toast.makeText(getApplicationContext(), allClassesTeachers.size()+"", Toast.LENGTH_SHORT).show();
         //Toast.makeText(getApplicationContext(), staff.allStaffs.size()+"", Toast.LENGTH_SHORT).show();

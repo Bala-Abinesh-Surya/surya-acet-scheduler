@@ -53,10 +53,12 @@
         <entry key="..\:/scheduler/app/src/main/res/layout/labs_more_layout.xml" value="0.264" />
         <entry key="..\:/scheduler/app/src/main/res/layout/lecture_more_layout.xml" value="0.264" />
         <entry key="..\:/scheduler/app/src/main/res/layout/online_staff_schedule.xml" value="0.264" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/period_box.xml" value="0.264" />
         <entry key="..\:/scheduler/app/src/main/res/layout/placement_details_adding_layout.xml" value="0.264" />
         <entry key="..\:/scheduler/app/src/main/res/layout/subject_staffs_rec_view.xml" value="0.25" />
         <entry key="..\:/scheduler/app/src/main/res/layout/subjects_details_adding_layout.xml" value="0.4" />
         <entry key="..\:/scheduler/app/src/main/res/layout/subjects_layout.xml" value="0.15789473684210525" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/timetabke_periods.xml" value="0.4" />
         <entry key="..\:/scheduler/app/src/main/res/layout/timetable.xml" value="0.23641304347826086" />
         <entry key="..\:/scheduler/app/src/main/res/menu/main_menu.xml" value="0.2" />
         <entry key="..\:/scheduler/app/src/main/res/menu/main_staffs_menu.xml" value="0.15789473684210525" />

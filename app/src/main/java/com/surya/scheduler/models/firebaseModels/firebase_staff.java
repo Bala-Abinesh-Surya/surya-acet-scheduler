@@ -9,18 +9,20 @@ public class firebase_staff {
     private boolean hasConstraints;
     private int workingHours;
     private List<String> schedules;
+    private List<String> subjectSchedules;
 
     /*Constructor*/
     public firebase_staff() {
 
     }
 
-    public firebase_staff(String name, String department, boolean hasConstraints, int workingHours, List<String> schedules) {
+    public firebase_staff(String name, String department, boolean hasConstraints, int workingHours, List<String> schedules, List<String> subjectSchedules) {
         this.name = name;
         this.department = department;
         this.hasConstraints = hasConstraints;
         this.workingHours = workingHours;
         this.schedules = schedules;
+        this.subjectSchedules = subjectSchedules;
     }
 
     /*Getters and Setter Methods*/

@@ -44,6 +44,7 @@ public class all_classes_recViewAdapter extends RecyclerView.Adapter<all_classes
 
     public void setAllClasses(ArrayList<Class> allClasses) {
         this.allClasses = allClasses;
+        notifyDataSetChanged();
     }
 
     @NonNull

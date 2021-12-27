@@ -1,13 +1,16 @@
 package com.surya.scheduler.activities;
 
+import static com.surya.scheduler.constants.data.ALL_CLASSES_DETAILS;
 import static com.surya.scheduler.constants.data.APP_DEFAULTS;
 import static com.surya.scheduler.constants.data.APP_OPENED_ONCE;
 import static com.surya.scheduler.constants.data.DAYS_OF_THE_WEEK;
 import static com.surya.scheduler.constants.data.MODE_OF_SCHEDULES;
 import static com.surya.scheduler.constants.data.OFFLINE;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,10 +19,14 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.surya.scheduler.R;
+import com.surya.scheduler.adapters.all_classes_recViewAdapter;
 import com.surya.scheduler.logic.generate;
 import com.surya.scheduler.logic.setup;
 import com.surya.scheduler.models.offline.Class;
@@ -35,11 +42,13 @@ import java.lang.reflect.Type;
 import java.util.Hashtable;
 import java.util.List;
 
-public class splash_screen extends AppCompatActivity {
+public class splash_screen extends AppCompatActivity{
 
     private boolean openedOnce;
     private ImageView imageView;
     private Thread thread;
+
+    private Context context;
 
     private firebase_class firebase_class;
     private firebase_room firebase_room;
@@ -47,6 +56,10 @@ public class splash_screen extends AppCompatActivity {
 
     private FirebaseDatabase firebaseDatabase;
     private FirebaseAuth firebaseAuth;
+
+    public interface notifyAllClassesAdded {
+        void notifyTheAdapter();
+    }
 
     private Gson gson = new Gson();
     private Type type = new TypeToken<String[]>(){}.getType();
@@ -66,12 +79,19 @@ public class splash_screen extends AppCompatActivity {
         // method to initialise the UI Elements
         init();
 
+        context = this;
+
         imageView.setVisibility(View.VISIBLE);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
 
-       // setup.getInstance();
-       // generate.getGenerateInstance();
+      /*  setup.getInstance();
+        generate.getGenerateInstance();
+
+        Intent intent = new Intent(splash_screen.this, MainActivity.class);
+        startActivity(intent);
+        finishAffinity();
+        finish(); */
 
         // 21-12-2021
 
@@ -108,7 +128,7 @@ public class splash_screen extends AppCompatActivity {
                     //coaching.getInstance();
 
                     /*All Classes details*/
-                    /*firebaseDatabase.getReference()
+                  /*   firebaseDatabase.getReference()
                             .child(ALL_CLASSES_DETAILS)
                             .addValueEventListener(new ValueEventListener() {
                                 @Override
@@ -117,18 +137,25 @@ public class splash_screen extends AppCompatActivity {
                                         for(DataSnapshot snapshot1 : snapshot.getChildren()){
                                             if(snapshot1.exists()){
                                                 firebase_class = snapshot1.getValue(firebase_class.class);
+                                                Log.d("antonidhish", firebase_class.getClassName());
                                                 addAllClasses(firebase_class);
                                                // Log.d("taggg", firebase_class.getClassName());
                                             }
                                         }
+
+                                        all_classes_recViewAdapter adapter = new all_classes_recViewAdapter(context, 0);
+                                        adapter.setAllClasses(Class.allClasses);
+                                        adapter.notifyDataSetChanged();
                                     }
+
+
                                 }
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
 
                                 }
-                            });
+                            });   */
 
                     /*Adding all the staffs*/
                     /*firebaseDatabase.getReference()
@@ -206,13 +233,14 @@ public class splash_screen extends AppCompatActivity {
     /*method to add the firebase_class to the normal classes*/
     private void addAllClasses(firebase_class firebase_class){
         /*fetching the details from the firebase_class*/
-        /*public firebase_class(String className, String department, int year, int numberOfStudents, List<String> staffs, List<String> schedules) {
+        /*public firebase_class(String className, String department, int year, int numberOfStudents, List<String> staffs, List<String> schedules, List<String> shortForm) {
             this.className = className;
             this.department = department;
             this.year = year;
             this.numberOfStudents = numberOfStudents;
             this.staffs = staffs;
             this.schedules = schedules;
+            this.shortForm = shortForm;
         }*/
 
         String className = firebase_class.getClassName();
@@ -221,32 +249,41 @@ public class splash_screen extends AppCompatActivity {
         int numberOfStudents = firebase_class.getNumberOfStudents();
 
         /*converting the List<String> staffs list to String[] staffs array*/
-        String[] staffs = firebase_class.getStaffs().toArray(new String[firebase_class.getStaffs().size()]);
+        List<String> fStaffs = firebase_class.getStaffs();
+        String[] staffs = new String[fStaffs.size()];
+        for(int i = 0; i < fStaffs.size(); i++){
+            staffs[i] = fStaffs.get(i);
+        }
 
         /*getting the schedules*/
         List<String> tempSchedules = firebase_class.getSchedules();
+        List<String> tempShortForm = firebase_class.getShortForm();
 
         /*creating the hashtable*/
-        Hashtable<String, String[]> table = new Hashtable<>();
+        Hashtable<String, String[]> table = new Hashtable<>(); // for the schedules
+        Hashtable<String, String[]> shortForm = new Hashtable<>(); // for the short forms
 
         /*converting the json string to string[]*/
         int index = 0;
         for(String day : DAYS_OF_THE_WEEK){
             String[] schedule = gson.fromJson(tempSchedules.get(index), type);
+            String[] shortFormArray = gson.fromJson(tempShortForm.get(index), type);
             index++;
 
             /*inputting the array in the hashtable*/
             table.put(day, schedule);
+            shortForm.put(day, shortFormArray);
         }
 
         /*Actual Allocation*/
-        /*public Class(String name, String department, int year, int numberOfStudents, String[] teachers, Hashtable<String, String[]> schedule) {
+        /*public Class(String name, String department, int year, int numberOfStudents, String[] teachers, Hashtable<String, String[]> schedule, Hashtable<String, String[]> shortFormSchedule) {
             this.name = name;
             this.department = department;
             this.year = year;
             this.numberOfStudents = numberOfStudents;
             this.teachers = teachers;
             this.schedule = schedule;
+            this.shortFormSchedule = shortFormSchedule;
         }*/
 
         if(! classFirstTime){
@@ -261,10 +298,11 @@ public class splash_screen extends AppCompatActivity {
                 year,
                 numberOfStudents,
                 staffs,
-                new Hashtable<>(),
-                // TODO : change made
-                new Hashtable<>()
+                table,
+                shortForm
         ));
+
+        Log.d("suryaa", Class.allClasses.size()+"");
     }
 
     /*method to add the firebase_staff to the normal staffs*/

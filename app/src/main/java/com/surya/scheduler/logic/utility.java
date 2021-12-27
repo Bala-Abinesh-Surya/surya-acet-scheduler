@@ -8,6 +8,8 @@ import static com.surya.scheduler.constants.data.LECTURE;
 import static com.surya.scheduler.constants.data.MORNING;
 import static com.surya.scheduler.constants.data.PLACEMENT;
 import static com.surya.scheduler.constants.data.PLACEMENT_INDICATORS;
+import static com.surya.scheduler.constants.data.SHORT_FORM_SUBJECTS;
+import static com.surya.scheduler.constants.data.SUBJECTS;
 import static com.surya.scheduler.constants.settings.LABORATORY_AFTERNOON_SESSION_PERIODS;
 import static com.surya.scheduler.constants.settings.LABORATORY_MORNING_SESSIONS_PERIODS;
 import static com.surya.scheduler.constants.settings.MAXIMUM_PERIODS_FOR_A_STAFF_PER_DAY;
@@ -510,5 +512,53 @@ public class utility {
                 }
             }
         }
+    }
+
+    // method to return the index of the subject
+    // shortForm is th4 parameter
+    public int returnSubjectIndex(String subjectShortForm){
+        // shortForm details
+        String department = subjectShortForm.substring(0, 3);
+        int year = Integer.parseInt(String.valueOf(subjectShortForm.charAt(4)));
+
+        // going through the SHORT_FORM_SUBJECTS array
+        int index = 0;
+        int previousYear = 0;
+
+        for(String subject : SHORT_FORM_SUBJECTS){
+            // subject details
+            String dep = subject.substring(0, 3);
+            int yearx = Integer.parseInt(String.valueOf(subject.charAt(4)));
+
+            if(previousYear == 0){
+                previousYear = yearx;
+            }
+            else{
+                if(previousYear == yearx){
+                    index++;
+                }
+                else{
+                    previousYear = yearx;
+                    index = 0;
+                }
+            }
+
+            if(yearx == year){
+                if(department.equals(dep)){
+                    if(subject.equals(subjectShortForm)){
+                        return index;
+                    }
+                }
+            }
+        }
+
+        // unreachable statement
+        return index;
+    }
+
+    // method to check if the slot is ready for the omitted_subject allocation
+    // returns true if the slot if fit
+    public boolean isTheSlotFitForOmittedAllocation(String omittedSubject){
+        return false;
     }
 }

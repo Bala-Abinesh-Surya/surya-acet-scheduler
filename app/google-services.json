@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "228322934287-c94sjqh5dq10pk0303ir6mt1fhlcuvl9.apps.googleusercontent.com",
+          "client_id": "228322934287-hf9bv246saa5uk3db1udqjqir21fd52q.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.surya.scheduler",
-            "certificate_hash": "088db68bc58abe3e017cf9084284ba04529d72f6"
+            "certificate_hash": "fc0961fa56583229e065b67d993eef64bd02c36e"
           }
         },
         {

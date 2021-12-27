@@ -10,15 +10,17 @@ public class firebase_class {
     private int numberOfStudents;
     private List<String> staffs;
     private List<String> schedules;
+    private List<String> shortForm;
 
     /*Constructor*/
-    public firebase_class(String className, String department, int year, int numberOfStudents, List<String> staffs, List<String> schedules) {
+    public firebase_class(String className, String department, int year, int numberOfStudents, List<String> staffs, List<String> schedules, List<String> shortForm) {
         this.className = className;
         this.department = department;
         this.year = year;
         this.numberOfStudents = numberOfStudents;
         this.staffs = staffs;
         this.schedules = schedules;
+        this.shortForm = shortForm;
     }
 
     /*Empty constructor*/
@@ -73,5 +75,13 @@ public class firebase_class {
 
     public void setSchedules(List<String> schedules) {
         this.schedules = schedules;
+    }
+
+    public List<String> getShortForm() {
+        return shortForm;
+    }
+
+    public void setShortForm(List<String> shortForm) {
+        this.shortForm = shortForm;
     }
 }

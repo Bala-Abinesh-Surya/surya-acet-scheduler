@@ -768,6 +768,8 @@ public class data {
             "CSE-Mr. S Senthil",
             "CSE-Mrs. V Anusooya",
             "CSE-Mrs. S. Anjana",
+            "CSE-Dr. Sasikala T S",
+            "CSE-Dr. Rajeesh Kumar",
             /*FYR STAFFS*/
             "FYR-Dr. S Anukumar Kathirvel",
             "FYR-Dr. S Raja",
@@ -780,6 +782,7 @@ public class data {
             "FYR-Dr. S. Aruna",
             "FYR-Dr. S. Saravana Veni",
             "FYR-Dr. S. R.Kalaivani",
+            "FYR-Dr. Jebha Starling",
             /*ECE STAFFS*/
             "ECE-Dr. Mahesh Kumar",
             "ECE-Dr.G.Kannan",
@@ -1080,7 +1083,7 @@ public class data {
                     "Dr. M. Kumara Dhas",
                     "Dr. A. Kumar",
                     "Mrs. S. Anjana",
-                    "Mrs. S. Anjana"+STAND_ALONE+ADM_COM_LAB,
+                    "Dr. Sasikala T S"+STAND_ALONE+ADM_COM_LAB,
                     "Dr. M. Kumara Dhas"+PAIRED+ECE_LAB_4,
                     "Dr. A. Kumar"+PAIRED+FYR_I_CHE,
                     "Dr. S Anukumar Kathirvel",
@@ -1089,15 +1092,15 @@ public class data {
             });
 
             put(FYR_I_B, new String[]{
-                    "Dr. S. Aruna",
+                    "Dr. S. ArunaDr. S. Saravana Veni",
                     "Ms. D. Sindhuja",
                     "Dr. S. Aruna",
                     "Dr. S. Saravana Veni",
-                    "Dr. S. R.Kalaivani",
-                    "Mrs. R P Sumithra",
-                    "Mrs. R P Sumithra"+STAND_ALONE+ADM_COM_LAB,
+                    "Dr. Jebha Starling",
+                    "Dr. Rajeesh Kumar",
+                    "Dr. Rajeesh Kumar"+STAND_ALONE+ADM_COM_LAB,
                     "Dr. S. Saravana Veni"+PAIRED+ECE_LAB_4,
-                    "Dr. S. R.Kalaivani"+PAIRED+FYR_I_CHE,
+                    "Dr. Jebha Starling"+PAIRED+FYR_I_CHE,
                     "Dr. S. Aruna",
                     "Dr. S. Saravana Veni",
                     "Dr.M. Ayyappan"
@@ -1108,11 +1111,11 @@ public class data {
                     "Ms. D. Sindhuja",
                     "Dr. S. Aruna",
                     "Dr. S. Saravana Veni",
-                    "Dr. A. Kumar",
-                    "Mrs. S. Anjana",
-                    "Mrs. S. Anjana"+STAND_ALONE+ADM_COM_LAB,
+                    "Dr. Jebha Starling",
+                    "CSE-Dr. Rajeesh Kumar",
+                    "CSE-Dr. Rajeesh Kumar"+STAND_ALONE+ADM_COM_LAB,
                     "Dr. S. Saravana Veni"+PAIRED+ECE_LAB_4,
-                    "Dr. A. Kumar"+PAIRED+FYR_I_CHE,
+                    "Dr. Jebha Starling"+PAIRED+FYR_I_CHE,
                     "Mr. N. Vairavasamy",
                     "Ms. D. Sindhuja",
                     "Mr. N. Vairavasamy"
