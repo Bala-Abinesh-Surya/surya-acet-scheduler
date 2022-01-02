@@ -8,6 +8,7 @@
         <entry key="..\:/scheduler/app/src/main/res/drawable/card_bg_stroke.xml" value="0.16644951140065148" />
         <entry key="..\:/scheduler/app/src/main/res/drawable/edit_text_stroke.xml" value="0.15625" />
         <entry key="..\:/scheduler/app/src/main/res/drawable/row_bg.xml" value="0.22777777777777777" />
+        <entry key="..\:/scheduler/app/src/main/res/drawable/smart_period_stroke.xml" value="0.22314814814814815" />
         <entry key="..\:/scheduler/app/src/main/res/drawable/stroke_bg.xml" value="0.16319444444444445" />
         <entry key="..\:/scheduler/app/src/main/res/drawable/stroke_bg1.xml" value="0.1638888888888889" />
         <entry key="..\:/scheduler/app/src/main/res/drawable/stroke_bg2.xml" value="0.1638888888888889" />
@@ -31,6 +32,8 @@
         <entry key="..\:/scheduler/app/src/main/res/layout/activity_remove_staffs.xml" value="0.264" />
         <entry key="..\:/scheduler/app/src/main/res/layout/activity_remove_staffs_conformation.xml" value="0.264" />
         <entry key="..\:/scheduler/app/src/main/res/layout/activity_schedule.xml" value="0.2359375" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/activity_smart_schedule.xml" value="0.264" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/activity_smart_schedule2.xml" value="0.26197916666666665" />
         <entry key="..\:/scheduler/app/src/main/res/layout/activity_splash_screen.xml" value="0.264" />
         <entry key="..\:/scheduler/app/src/main/res/layout/activity_staff_adding.xml" value="0.2" />
         <entry key="..\:/scheduler/app/src/main/res/layout/activity_staff_basic_details.xml" value="0.2602996254681648" />
@@ -40,6 +43,7 @@
         <entry key="..\:/scheduler/app/src/main/res/layout/activity_swap_time_table.xml" value="0.4" />
         <entry key="..\:/scheduler/app/src/main/res/layout/all_classes_list.xml" value="0.4" />
         <entry key="..\:/scheduler/app/src/main/res/layout/all_staffs_list.xml" value="0.264" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/child_rec_view.xml" value="0.26197916666666665" />
         <entry key="..\:/scheduler/app/src/main/res/layout/class_staff_allocating_sample.xml" value="0.25" />
         <entry key="..\:/scheduler/app/src/main/res/layout/class_stats_list.xml" value="0.25" />
         <entry key="..\:/scheduler/app/src/main/res/layout/class_subject_details.xml" value="0.264" />
@@ -55,6 +59,7 @@
         <entry key="..\:/scheduler/app/src/main/res/layout/online_staff_schedule.xml" value="0.264" />
         <entry key="..\:/scheduler/app/src/main/res/layout/period_box.xml" value="0.264" />
         <entry key="..\:/scheduler/app/src/main/res/layout/placement_details_adding_layout.xml" value="0.264" />
+        <entry key="..\:/scheduler/app/src/main/res/layout/smart_period.xml" value="0.4" />
         <entry key="..\:/scheduler/app/src/main/res/layout/subject_staffs_rec_view.xml" value="0.25" />
         <entry key="..\:/scheduler/app/src/main/res/layout/subjects_details_adding_layout.xml" value="0.4" />
         <entry key="..\:/scheduler/app/src/main/res/layout/subjects_layout.xml" value="0.15789473684210525" />

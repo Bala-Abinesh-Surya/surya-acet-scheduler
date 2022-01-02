@@ -19,4 +19,6 @@
     <color name="stroke_color">#0197DA</color>
     <color name="green">#74FF00</color>
     <color name="classes_list_bg">#E85DFF</color>
+
+    <color name="inverseColor">@color/black</color>
 </resources>

@@ -18,4 +18,6 @@
     <color name="stroke_color">#0197DA</color>
     <color name="green">@color/purple_500</color>
     <color name="classes_list_bg">#333333</color>
+
+    <color name="inverseColor">@color/purple_500</color>
 </resources>

@@ -101,7 +101,7 @@ public class class_info_activity extends AppCompatActivity {
                 String mode = sharedPreferences.getString(MODE_OF_SCHEDULES, null);
 
                 // opening the normal schedule activity
-                Intent intent = new Intent(class_info_activity.this, com.surya.scheduler.activities.schedule.class);
+                Intent intent = new Intent(class_info_activity.this, smart_schedule_activity.class);
                 intent.putExtra(CLASS_NAME, name);
                 intent.putExtra(FROM, CLASS);
                 startActivity(intent);

@@ -1,5 +1,6 @@
 package com.surya.scheduler.logic;
 
+import static com.surya.scheduler.constants.data.DAYS;
 import static com.surya.scheduler.constants.data.DAYS_OF_THE_WEEK;
 import static com.surya.scheduler.constants.data.FREE;
 import static com.surya.scheduler.constants.data.LAB;
@@ -24,6 +25,7 @@ import com.surya.scheduler.models.offline.paired;
 import com.surya.scheduler.models.offline.room;
 import com.surya.scheduler.models.offline.staff;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 public class utility {
@@ -156,6 +158,17 @@ public class utility {
         return new Hashtable<>();
     }
 
+    public Hashtable<String, String[]> returnShortFormClassSchedule(String className){
+        for(Class classx : Class.allClasses){
+            if(classx.getName().equals(className)){
+                return classx.getShortFormSchedule();
+            }
+        }
+
+        // unreachable statement
+        return new Hashtable<>();
+    }
+
     // method to return the hash table for the given staff
     // staff name is the argument
     public Hashtable<String, String[]> returnStaffSchedule(String staffName){
@@ -180,6 +193,19 @@ public class utility {
 
         // unreachable statement
         return new Hashtable<>();
+    }
+
+    // method to return all the ArrayList<String[]> present in a hash table
+    public ArrayList<String[]> returnActualPeriods(Hashtable<String, String[]> schedule){
+        ArrayList<String[]> periods = new ArrayList<>();
+
+        // going through the hash table
+        // TODO : using the whole DAYS_OF_THE_WEEK as the key
+        for(String day : DAYS_OF_THE_WEEK){
+            periods.add(schedule.get(day).clone());
+        }
+
+        return periods;
     }
 
     // method to alter the array for class, staffs, labs
@@ -560,5 +586,33 @@ public class utility {
     // returns true if the slot if fit
     public boolean isTheSlotFitForOmittedAllocation(String omittedSubject){
         return false;
+    }
+
+    // method to return the Days, period number row
+    public String[] returnPeriodNumberArray(){
+        String[] temp = new String[NUMBER_OF_PERIODS_PER_DAY + 1];
+
+        temp[0] = DAYS + " / Periods";
+
+        for(int i = 1; i < temp.length; i++){
+            temp[i] = i+"";
+        }
+
+        return temp;
+    }
+
+    // method to return the String[] periods with the day Text in the 0th index
+    public String[] returnDayedPeriods(String[] wPeriods, int dayNo){
+        String[] oPeriods = new String[wPeriods.length + 1];
+
+        // adding the day to the 0th index
+        oPeriods[0] = DAYS_OF_THE_WEEK[dayNo];
+
+        // adding the periods
+        for(int i = 0; i < wPeriods.length; i++){
+            oPeriods[i + 1] = wPeriods[i];
+        }
+
+        return oPeriods;
     }
 }

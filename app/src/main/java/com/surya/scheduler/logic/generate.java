@@ -1,13 +1,10 @@
 package com.surya.scheduler.logic;
 
 import static com.surya.scheduler.constants.data.AFTERNOON;
-import static com.surya.scheduler.constants.data.ALLOWED;
-import static com.surya.scheduler.constants.data.CONTINUOUS;
 import static com.surya.scheduler.constants.data.DAYS_OF_THE_WEEK;
 import static com.surya.scheduler.constants.data.FREE;
 import static com.surya.scheduler.constants.data.LAB;
 import static com.surya.scheduler.constants.data.LECTURE;
-import static com.surya.scheduler.constants.data.MONDAY;
 import static com.surya.scheduler.constants.data.MORNING;
 import static com.surya.scheduler.constants.data.PAIRED;
 import static com.surya.scheduler.constants.data.SHORT_FORM_SUBJECTS;
@@ -16,7 +13,6 @@ import static com.surya.scheduler.constants.data.SUBJECTS;
 import static com.surya.scheduler.constants.settings.LABORATORY_MORNING_SESSIONS_PERIODS;
 import static com.surya.scheduler.constants.settings.NUMBER_OF_ATTEMPTS_BEFORE_OMITTED;
 import static com.surya.scheduler.constants.settings.NUMBER_OF_ATTEMPTS_BEFORE_OMITTED_LAB;
-import static com.surya.scheduler.constants.settings.NUMBER_OF_ATTEMPTS_BEFORE_SPECIAL_ALLOCATION;
 import static com.surya.scheduler.constants.settings.NUMBER_OF_PERIODS_LECTURE;
 import static com.surya.scheduler.constants.settings.NUMBER_OF_PERIODS_PER_DAY;
 import static com.surya.scheduler.constants.status.GENERATE_LABS_COMPLETED;
@@ -24,7 +20,6 @@ import static com.surya.scheduler.constants.status.GENERATE_PAIRED_SUBJECTS_COMP
 import static com.surya.scheduler.constants.status.GENERATE_STATUS;
 import static com.surya.scheduler.constants.status.GENERATE_THEORY_COMPLETED;
 import static com.surya.scheduler.constants.status.OMITTED_SUBJECTS;
-import static com.surya.scheduler.constants.status.PAIRED_INSTANCE_CREATED;
 import static com.surya.scheduler.constants.status.PAIRED_LAB_GENERATED;
 import static com.surya.scheduler.constants.status.REALLOCATED_SUBJECTS;
 import static com.surya.scheduler.constants.status.REALLOCATION_THEORY_OVER;
@@ -34,17 +29,13 @@ import static com.surya.scheduler.constants.status.SUBJECTS_GENERATED;
 import android.util.Log;
 
 import com.surya.scheduler.models.offline.Class;
-import com.surya.scheduler.models.offline.lab_periods;
 import com.surya.scheduler.models.offline.omitted_subject;
 import com.surya.scheduler.models.offline.paired;
 import com.surya.scheduler.models.offline.room;
 import com.surya.scheduler.models.offline.staff;
 import com.surya.scheduler.storage.store;
 
-import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Locale;
-import java.util.concurrent.Callable;
 
 public class generate {
 
@@ -963,7 +954,7 @@ public class generate {
         // going through the omitted_subject array list
         int index = omitted_subject.omitted_subjects.size() - 1;
 
-        while (omitted_subject.omitted_subjects.size() != 0){
+        while (omitted_subject.omitted_subjects.size() > 0){
             // omitted_subject details
             omitted_subject omittedSubject = omitted_subject.omitted_subjects.get(index);
 
@@ -1001,6 +992,7 @@ public class generate {
             // if the slot if FREE and meets the constraints, allocating the subject to that slot
             // else, doing something new
             boolean spotted = false;
+            int number0fTimes = 0;
 
             while (! spotted){
                 /*Using Random method generating random numbers to denote the day of the week and session*/
@@ -1105,9 +1097,18 @@ public class generate {
                     }
                 }
 
-                if(! spotted){
-                    // this spot is already allocated to some other subject
-                    // or the slot is FREE (for the class, may be the staff) but it does not meet the constraints
+                if(number0fTimes > 30){
+                    if(! spotted){
+                        // this spot is already allocated to some other subject
+                        // or the slot is FREE (for the class, may be the staff) but it does not meet the constraints
+                        if(omittedSubjectStaff2 == null){
+
+                        }
+
+                        else{
+                            // omittedSubjectStaff2 is not null
+                        }
+                    }
 
                 }
 
@@ -1115,6 +1116,7 @@ public class generate {
                 omitted_subject.omitted_subjects.remove(omittedSubject);
 
                 Log.d("dexter", omittedSubjectName + "removed" + "length now : " + omitted_subject.omitted_subjects.size());
+                number0fTimes++;
             }
 
             index--;
