@@ -1107,15 +1107,19 @@ public class generate {
 
                         else{
                             // omittedSubjectStaff2 is not null
+                            spotted = true;
+
+
                         }
                     }
-
                 }
 
                 spotted = true;
-                omitted_subject.omitted_subjects.remove(omittedSubject);
 
+                omitted_subject.omitted_subjects.remove(omittedSubject);
                 Log.d("dexter", omittedSubjectName + "removed" + "length now : " + omitted_subject.omitted_subjects.size());
+
+
                 number0fTimes++;
             }
 

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">scheduler</string>
     <string name="classes">Classes</string>
+
     <!--Custom strings-->
     <string name="all_classes">All Classes</string>
     <string name="all_staffs">All Staffs</string>
@@ -214,5 +215,13 @@
     <string name="go_back_ask">If you go back, you might lose all the progress</string>
     <string name="show_more">Show more</string>
     <string name="show_less">Show less</string>
+
+    <!--Create new timetable activity-->
+    <string name="choose_mode_of_schedules">Choose the mode of time-table allocation</string>
+    <string name="offline_mode">Offline Mode</string>
+    <string name="online_mode">Online Mode</string>
+    <string name="mixed_mode">Online - Offline Mode</string>
+    <string name="with_effect_from">Allocated time-table will be in effect from?</string>
+    <string name="generation_consent">Generated with the consent of…</string>
 
 </resources>

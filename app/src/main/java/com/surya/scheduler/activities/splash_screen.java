@@ -29,6 +29,7 @@ import com.surya.scheduler.R;
 import com.surya.scheduler.adapters.all_classes_recViewAdapter;
 import com.surya.scheduler.logic.generate;
 import com.surya.scheduler.logic.setup;
+import com.surya.scheduler.logic.utility;
 import com.surya.scheduler.models.offline.Class;
 import com.surya.scheduler.models.firebaseModels.firebase_class;
 import com.surya.scheduler.models.firebaseModels.firebase_room;
@@ -125,6 +126,8 @@ public class splash_screen extends AppCompatActivity{
 
                     setup.getInstance();
                     generate.getGenerateInstance();
+                    utility utility = new utility();
+                    utility.showUpdateNotification(splash_screen.this);
                     //coaching.getInstance();
 
                     /*All Classes details*/

@@ -1,5 +1,6 @@
 package com.surya.scheduler.logic;
 
+import static com.surya.scheduler.app.surya.UPDATE_CHANNEL;
 import static com.surya.scheduler.constants.data.DAYS;
 import static com.surya.scheduler.constants.data.DAYS_OF_THE_WEEK;
 import static com.surya.scheduler.constants.data.FREE;
@@ -18,8 +19,14 @@ import static com.surya.scheduler.constants.settings.MAXIMUM_PERIODS_FOR_A_STAFF
 import static com.surya.scheduler.constants.settings.NUMBER_OF_PERIODS_PER_DAY;
 import static com.surya.scheduler.constants.status.SUBJECT_REPEATED;
 
+import android.app.Notification;
+import android.content.Context;
 import android.util.Log;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
+import com.surya.scheduler.R;
 import com.surya.scheduler.models.offline.Class;
 import com.surya.scheduler.models.offline.paired;
 import com.surya.scheduler.models.offline.room;
@@ -614,5 +621,20 @@ public class utility {
         }
 
         return oPeriods;
+    }
+
+    // create a notification to show to the user when a time table has been generated
+    public void showUpdateNotification(Context context){
+        // creating a notification
+        Notification notification = new NotificationCompat.Builder(context, UPDATE_CHANNEL)
+                .setContentTitle("ACET")
+                .setContentText("New time table has been generated..")
+                .addAction(R.drawable.sim, "VIEW", null)
+                .setSmallIcon(R.drawable.sim)
+                .setAutoCancel(true)
+                .build();
+
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
+        notificationManagerCompat.notify(1, notification);
     }
 }
