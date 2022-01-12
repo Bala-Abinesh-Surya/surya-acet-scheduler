@@ -6,6 +6,7 @@ import static com.surya.scheduler.constants.data.FREE;
 import static com.surya.scheduler.constants.data.LAB;
 import static com.surya.scheduler.constants.data.LECTURE;
 import static com.surya.scheduler.constants.data.MORNING;
+import static com.surya.scheduler.constants.data.NOT_ALLOWED;
 import static com.surya.scheduler.constants.data.PAIRED;
 import static com.surya.scheduler.constants.data.SHORT_FORM_SUBJECTS;
 import static com.surya.scheduler.constants.data.STAND_ALONE;
@@ -1101,15 +1102,49 @@ public class generate {
                     if(! spotted){
                         // this spot is already allocated to some other subject
                         // or the slot is FREE (for the class, may be the staff) but it does not meet the constraints
-                        if(omittedSubjectStaff2 == null){
+                        // there are many cases here..
 
-                        }
+                        // case 1 : class period is FREE
+                        if(omittedClassTempTable[randomSession].equals(FREE)){
+                            // staff2 is null
+                            if(omittedSubjectStaff2 == null){
+                                // ... staff1 period is also FREE
+                                if(omittedStaff1TempTable[randomSession].equals(FREE)){
+                                    // no need to do anything
+                                    // as this slot is not fit for allocation
+                                }
 
-                        else{
-                            // omittedSubjectStaff2 is not null
-                            spotted = true;
+                                // ... staff1 period is not FREE
+                                else{
+                                    // checking if the slot is not NOT_ALLOWED
+                                    if(omittedStaff1TempTable[randomSession].equals(NOT_ALLOWED)){
+                                        // some staffs may have constraints
+                                    }
 
+                                    else{
+                                        // some subject is allocated for sure
+                                        // getting the allocated subject name
+                                        String subjectx = staff.allStaffs.get(utility.returnStaffPosition(omittedSubjectStaff1)).getSubjectsSchedule().get(day)[randomSession];
 
+                                        // getting the allocated subject name
+                                        String allocatedClassName = omittedStaff1TempTable[randomSession];
+
+                                        // isTheSlotFitForOmittedAllocation(String allocatedSubject, String allocatedClassName, String omittedSubject, String omittedClassName)
+                                        if(utility.isTheSlotFitForOmittedAllocation(subjectx, allocatedClassName, omittedSubjectName, className)){
+                                            //
+                                        }
+
+                                        else{
+                                            // the staff's slot may be assigned to a lab or may be a PAIRED subject
+                                        }
+                                    }
+                                }
+                            }
+
+                            // staff2 is not null
+                            else{
+
+                            }
                         }
                     }
                 }

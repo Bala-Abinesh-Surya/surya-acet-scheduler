@@ -1,6 +1,7 @@
 package com.surya.scheduler.logic;
 
 import static com.surya.scheduler.app.surya.UPDATE_CHANNEL;
+import static com.surya.scheduler.constants.data.CONTINUOUS;
 import static com.surya.scheduler.constants.data.DAYS;
 import static com.surya.scheduler.constants.data.DAYS_OF_THE_WEEK;
 import static com.surya.scheduler.constants.data.FREE;
@@ -8,6 +9,7 @@ import static com.surya.scheduler.constants.data.LAB;
 import static com.surya.scheduler.constants.data.LABORATORY_INDICATORS;
 import static com.surya.scheduler.constants.data.LECTURE;
 import static com.surya.scheduler.constants.data.MORNING;
+import static com.surya.scheduler.constants.data.PAIRED;
 import static com.surya.scheduler.constants.data.PLACEMENT;
 import static com.surya.scheduler.constants.data.PLACEMENT_INDICATORS;
 import static com.surya.scheduler.constants.data.SHORT_FORM_SUBJECTS;
@@ -548,17 +550,17 @@ public class utility {
     }
 
     // method to return the index of the subject
-    // shortForm is th4 parameter
-    public int returnSubjectIndex(String subjectShortForm){
+    // subject is the parameter
+    public int returnSubjectIndex(String subjectx){
         // shortForm details
-        String department = subjectShortForm.substring(0, 3);
-        int year = Integer.parseInt(String.valueOf(subjectShortForm.charAt(4)));
+        String department = subjectx.substring(0, 3);
+        int year = Integer.parseInt(String.valueOf(subjectx.charAt(4)));
 
         // going through the SHORT_FORM_SUBJECTS array
         int index = 0;
         int previousYear = 0;
 
-        for(String subject : SHORT_FORM_SUBJECTS){
+        for(String subject : SUBJECTS){
             // subject details
             String dep = subject.substring(0, 3);
             int yearx = Integer.parseInt(String.valueOf(subject.charAt(4)));
@@ -578,7 +580,7 @@ public class utility {
 
             if(yearx == year){
                 if(department.equals(dep)){
-                    if(subject.equals(subjectShortForm)){
+                    if(subject.equals(subjectx)){
                         return index;
                     }
                 }
@@ -591,8 +593,31 @@ public class utility {
 
     // method to check if the slot is ready for the omitted_subject allocation
     // returns true if the slot if fit
-    public boolean isTheSlotFitForOmittedAllocation(String omittedSubject){
-        return false;
+    public boolean isTheSlotFitForOmittedAllocation(String allocatedSubject, String allocatedClassName, String omittedSubject, String omittedClassName){
+        // checking if the subject slot is the same class's subject slot
+        if(omittedClassName.equals(allocatedClassName) && allocatedSubject.equals(omittedSubject)){
+            return false;
+        }
+
+        else{
+            // getting the tag of the allocatedSubject
+            String tag = identifyTag(allocatedSubject);
+
+            // getting the class teachersCombo
+            String teacherCombo = Class.allClasses.get(returnClassPosition(allocatedClassName)).getTeachers()[returnSubjectIndex(allocatedSubject) + 1];
+
+            if(tag.equals(LAB) || tag.equals(PLACEMENT)){
+                return false;
+            }
+
+            // if the subject is PAIRED or CONTINUOUS
+            if(teacherCombo.contains(PAIRED) || teacherCombo.contains(CONTINUOUS)){
+                return false;
+            }
+
+            // if it does contain PAIRED or CONTINUOUS and the subject is neither a LAB or PLACEMENT
+            return true;
+        }
     }
 
     // method to return the Days, period number row
